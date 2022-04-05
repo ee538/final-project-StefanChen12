@@ -17,7 +17,7 @@ double TrojanMap::GetLat(const std::string& id) {
     // if id does not exist, return -1
     if(name == "NULL") return -1;
     else{
-      Node node = data[name];
+      Node node = data[id];
       double lat = node.lat;
       return lat;
     }
@@ -34,9 +34,9 @@ double TrojanMap::GetLon(const std::string& id) {
   std::string name = GetName(id);
     if(name == "NULL") return -1;
     else{
-      Node node = data[name];
-      double lat = node.lat;
-      return lat;
+      Node node = data[id];
+      double lon = node.lon;
+      return lon;
     }
 }
 
@@ -47,13 +47,12 @@ double TrojanMap::GetLon(const std::string& id) {
  * @return {std::string}    : name
  */
 std::string TrojanMap::GetName(const std::string& id) { 
-  std::unordered_map<std::string, Node>::iterator it;
-  for(it = data.begin(); it != data.end(); it++){
-    if(it->second.id == id){
-      return it->second.name;
-    }
+  if(data[id].name == "") return "NULL";
+  else{
+    Node node = data[id];
+    std::string name = node.name;
+    return name;
   }
-  return "NULL";
 }
 
 /**
@@ -81,6 +80,7 @@ std::vector<std::string> TrojanMap::GetNeighborIDs(const std::string& id) {
 std::string TrojanMap::GetID(const std::string& name) {
 
   std::vector<std::string> results;
+  
   std::unordered_map<std::string, Node>::iterator it;
   for ( it = data.begin(); it != data.end(); it++){
     std::string Node_name = it->second.name;
