@@ -12,7 +12,7 @@ TEST(TrojanMapStudentTest, Test1) {
 
   std::cout << "----------" << std::endl;
   // Test GetName:
-  std::string name = m.GetName("150934188");
+  double name = m.GetPosition("122659207");
   std::cout << name << std::endl;
 }
 
