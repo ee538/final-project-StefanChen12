@@ -13,7 +13,15 @@
  * @return {double}         : latitude
  */
 double TrojanMap::GetLat(const std::string& id) {
-    return 0;
+    std::string name = GetName(id);
+    // if id does not exist, return -1
+    if(name == "NULL") return -1;
+    else{
+      Node node = data[name];
+      double lat = node.lat;
+      return lat;
+    }
+    
 }
 
 /**
@@ -23,7 +31,13 @@ double TrojanMap::GetLat(const std::string& id) {
  * @return {double}         : longitude
  */
 double TrojanMap::GetLon(const std::string& id) { 
-    return 0;
+  std::string name = GetName(id);
+    if(name == "NULL") return -1;
+    else{
+      Node node = data[name];
+      double lat = node.lat;
+      return lat;
+    }
 }
 
 /**
@@ -33,7 +47,13 @@ double TrojanMap::GetLon(const std::string& id) {
  * @return {std::string}    : name
  */
 std::string TrojanMap::GetName(const std::string& id) { 
-    return "";
+  std::unordered_map<std::string, Node>::iterator it;
+  for(it = data.begin(); it != data.end(); it++){
+    if(it->second.id == id){
+      return it->second.name;
+    }
+  }
+  return "NULL";
 }
 
 /**
@@ -75,6 +95,8 @@ std::pair<double, double> TrojanMap::GetPosition(std::string name) {
  * 
  */
 int TrojanMap::CalculateEditDistance(std::string a, std::string b){
+  //first we have to get the Node object of these two names
+  
     return 0;
 }
 
@@ -103,11 +125,23 @@ std::vector<std::string> TrojanMap::Autocomplete(std::string name){
   std::unordered_map<std::string, Node>::iterator it;
   for ( it = data.begin(); it != data.end(); it++){
     std::string Node_name = it->second.name;
-    transform(Node_name.begin(), Node_name.end(), Node_name.begin(),::tolower);
-    transform(name.begin(), name.end(), name.begin(), ::tolower);
+    // transform(Node_name.begin(), Node_name.end(), Node_name.begin(),::tolower);
+    // transform(name.begin(), name.end(), name.begin(), ::tolower);
     if(Node_name.length() < name.length()) continue;
-    if(Node_name.find(name) == 0){
-      results.push_back(Node_name);
+    // if(Node_name.find(name) == 0){
+    //   results.push_back(Node_name);
+    // }
+    for(int i = 0; i < name.length(); i++){
+      if(tolower(Node_name[i]) == tolower(name[i])){
+        if(i == name.length() - 1){
+          results.push_back(Node_name);
+        }else{
+          continue;
+        }
+      }
+      else{
+        break;
+      }
     }
   }
   return results;

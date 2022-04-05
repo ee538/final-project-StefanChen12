@@ -29,6 +29,14 @@ class Node {
     std::unordered_set<std::string> attributes;  // List of the attributes of the location.
 };
 
+// this node struct is for calculating the shrotest distance between two different places
+struct node{
+    bool child_visited = false; // check if all children have been visited, the default value is false
+    long distance = LONG_MAX; // the distance between this node and the start node, the default value is infinity.
+    std::string id; // A unique id assign to each point
+    std::string prev; // the previous node in the shortest path.
+};
+
 class TrojanMap {
  public:
   // Constructor
