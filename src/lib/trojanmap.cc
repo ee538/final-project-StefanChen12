@@ -1,7 +1,6 @@
 #include "trojanmap.h"
 #include <algorithm>
 #include <string>
-#include <cmath>
 
 
 //-----------------------------------------------------
@@ -63,7 +62,12 @@ std::string TrojanMap::GetName(const std::string& id) {
  * @return {std::vector<std::string>}  : neighbor ids
  */
 std::vector<std::string> TrojanMap::GetNeighborIDs(const std::string& id) {
-    return {};
+
+  if (data.count(id) <= 0) {
+    return std::vector<std::string>();
+  }
+  return data[id].neighbors;
+
 }
 
 /**
@@ -74,8 +78,19 @@ std::vector<std::string> TrojanMap::GetNeighborIDs(const std::string& id) {
  * @return {int}  : id
  */
 std::string TrojanMap::GetID(const std::string& name) {
-  std::string res = "";
-  return res;
+
+  std::vector<std::string> results;
+  
+  std::unordered_map<std::string, Node>::iterator it;
+  for ( it = data.begin(); it != data.end(); it++){
+    std::string Node_name = it->second.name;
+
+    if(it->second.name ==  name){
+      return it -> first;
+    }
+  
+  }
+  return "";
 }
 
 /**
@@ -85,15 +100,10 @@ std::string TrojanMap::GetID(const std::string& name) {
  * @return {std::pair<double,double>}  : (lat, lon)
  */
 std::pair<double, double> TrojanMap::GetPosition(std::string name) {
-  std::string id = GetID(name);
-  std::pair<double, double> results(-1, -1);
-  if(id == "") return results;
-  else{
-    double lat = data[id].lat;
-    double lon = data[id].lon;
-    results = std::pair<double, double> (lat, lon);
-    return results;
-  }
+  std::string pos_id = GetID(name);
+  
+  std::pair<double, double> results(data[pos_id].lat, data[pos_id].lon);
+  return results;
 }
 
 
