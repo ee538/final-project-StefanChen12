@@ -1,4 +1,7 @@
 #include "trojanmap.h"
+#include <algorithm>
+#include <string>
+
 
 //-----------------------------------------------------
 // TODO: Student should implement the following:
@@ -96,6 +99,17 @@ std::string TrojanMap::FindClosestName(std::string name) {
  */
 std::vector<std::string> TrojanMap::Autocomplete(std::string name){
   std::vector<std::string> results;
+  
+  std::unordered_map<std::string, Node>::iterator it;
+  for ( it = data.begin(); it != data.end(); it++){
+    std::string Node_name = it->second.name;
+    transform(Node_name.begin(), Node_name.end(), Node_name.begin(),::tolower);
+    transform(name.begin(), name.end(), name.begin(), ::tolower);
+    if(Node_name.length() < name.length()) continue;
+    if(Node_name.find(name) == 0){
+      results.push_back(Node_name);
+    }
+  }
   return results;
 }
 
