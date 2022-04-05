@@ -12,7 +12,14 @@ TEST(TrojanMapStudentTest, Test1) {
 
   std::cout << "----------" << std::endl;
   // Test GetName:
-  double name = m.GetPosition("122659207");
+  std::string name = m.GetName("358784231");
+  double lat = m.GetLat("358784231");
+  double lon = m.GetLon("358784231");
   std::cout << name << std::endl;
+  std::cout << lat << std::endl;
+  std::cout << lon << std::endl;
 }
 
+TEST(TrajanMapJudyTest, Test2) {
+  
+}
