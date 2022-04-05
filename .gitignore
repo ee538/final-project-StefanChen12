@@ -11,4 +11,3 @@
 WORKSPACE
 ncurses.BUILD
 opencv.BUILD
-img
