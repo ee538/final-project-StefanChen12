@@ -1,6 +1,7 @@
 #include "trojanmap.h"
 #include <algorithm>
 #include <string>
+#include <cmath>
 
 
 //-----------------------------------------------------
@@ -84,8 +85,15 @@ std::string TrojanMap::GetID(const std::string& name) {
  * @return {std::pair<double,double>}  : (lat, lon)
  */
 std::pair<double, double> TrojanMap::GetPosition(std::string name) {
+  std::string id = GetID(name);
   std::pair<double, double> results(-1, -1);
-  return results;
+  if(id == "") return results;
+  else{
+    double lat = data[id].lat;
+    double lon = data[id].lon;
+    results = std::pair<double, double> (lat, lon);
+    return results;
+  }
 }
 
 
@@ -95,8 +103,14 @@ std::pair<double, double> TrojanMap::GetPosition(std::string name) {
  */
 int TrojanMap::CalculateEditDistance(std::string a, std::string b){
   //first we have to get the Node object of these two names
-  
-    return 0;
+  // then we get lat and lon of two nodes 
+  // then we calculate the distance 
+  std::pair<double, double> result1 = GetPosition(a);
+  std::pair<double, double> result2 = GetPosition(b);
+  int distance = 0;
+  distance = pow(result1.first - result2.first, 2) + pow(result1.second - result2.second, 2);
+  distance = pow(distance, 0.5);
+    return distance;
 }
 
 /**
