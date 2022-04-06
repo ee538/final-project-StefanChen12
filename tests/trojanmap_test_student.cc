@@ -35,4 +35,3 @@ TEST(TrojanMapStudentTest, Test1) {
 TEST(TrajanMapJudyTest, Test2) {
   
 }
-
