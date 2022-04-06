@@ -13,9 +13,8 @@
  * @return {double}         : latitude
  */
 double TrojanMap::GetLat(const std::string& id) {
-    std::string name = GetName(id);
     // if id does not exist, return -1
-    if(name == "NULL") return -1;
+    if(data.count(id) == 0) return -1;
     else{
       Node node = data[id];
       double lat = node.lat;
@@ -31,8 +30,7 @@ double TrojanMap::GetLat(const std::string& id) {
  * @return {double}         : longitude
  */
 double TrojanMap::GetLon(const std::string& id) { 
-  std::string name = GetName(id);
-    if(name == "NULL") return -1;
+    if(data.count(id) == 0) return -1;
     else{
       Node node = data[id];
       double lon = node.lon;
@@ -158,6 +156,7 @@ std::vector<std::string> TrojanMap::Autocomplete(std::string name){
       if(tolower(Node_name[i]) == tolower(name[i])){
         if(i == name.length() - 1){
           results.push_back(Node_name);
+          std::cout << it->first << std::endl;
         }else{
           continue;
         }
