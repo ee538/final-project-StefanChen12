@@ -125,6 +125,47 @@ int TrojanMap::CalculateEditDistance(std::string a, std::string b){
     return distance;
 }
 
+int TrojanMap::Min(int x, int y, int z){
+  return std::min(std::min(x, y), z);
+}
+
+int TrojanMap::editDist(std::string str1, std::string str2, int m, int n){
+  // If first string is empty, the only option is to insert all characters of second string into first
+  // Create a table to store results of subproblems
+    int dp[m + 1][n + 1];
+ 
+    // Fill d[][] in bottom up manner
+    for (int i = 0; i <= m; i++) {
+        for (int j = 0; j <= n; j++) {
+            // If first string is empty, only option is to
+            // insert all characters of second string
+            if (i == 0)
+                dp[i][j] = j; // Min. operations = j
+ 
+            // If second string is empty, only option is to
+            // remove all characters of second string
+            else if (j == 0)
+                dp[i][j] = i; // Min. operations = i
+ 
+            // If last characters are same, ignore last char
+            // and recur for remaining string
+            else if (str1[i - 1] == str2[j - 1])
+                dp[i][j] = dp[i - 1][j - 1];
+ 
+            // If the last character is different, consider
+            // all possibilities and find the minimum
+            else
+                dp[i][j]
+                    = 1
+                      + Min(dp[i][j - 1], // Insert
+                            dp[i - 1][j], // Remove
+                            dp[i - 1][j - 1]); // Replace
+        }
+    }
+ 
+    return dp[m][n];
+}
+
 /**
  * FindClosestName: Given a location name, return the name with smallest edit distance.
  *
@@ -132,8 +173,23 @@ int TrojanMap::CalculateEditDistance(std::string a, std::string b){
  * @return {std::string} tmp           : similar name
  */
 std::string TrojanMap::FindClosestName(std::string name) {
-  std::string tmp = "";
-  return tmp;
+  std::unordered_map<std::string, Node>::iterator it;
+  int dis = INT_MAX;
+  int n = name.length();
+  std::string closest_name;
+
+  for(it = data.begin(); it != data.end(); it++){
+    int m = it->second.name.length();
+    if(m == 0) continue;
+    int current_distance = editDist(it->second.name, name, m, n);
+    if(current_distance < dis){
+      // std::cout << current_distance << std::endl;
+      closest_name = it->second.name;
+      dis = current_distance;
+      // std::cout << closest_name << std::endl;
+    }
+  }
+  return closest_name;
 }
 
 

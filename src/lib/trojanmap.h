@@ -58,6 +58,12 @@ class TrojanMap {
   // Get the Longitude of a Node given its id.
   double GetLon(const std::string& id);
 
+  // Get the smallest number of 3 variables, for finding the closest name.
+  int Min(int x, int y, int z);
+
+  // get editDistance of two string.
+  int editDist(std::string str1, std::string str2, int m, int n);
+
   // Get the name of a Node given its id.
   std::string GetName(const std::string& id);
 
