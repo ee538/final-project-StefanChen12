@@ -48,6 +48,7 @@ double TrojanMap::GetLon(const std::string& id) {
  * @return {std::string}    : name
  */
 std::string TrojanMap::GetName(const std::string& id) { 
+
   if(data[id].name.compare("") == 0) return "NULL";
   else{
     Node node = data[id];
@@ -107,7 +108,6 @@ std::pair<double, double> TrojanMap::GetPosition(std::string name) {
   std::pair<double, double> results(data[pos_id].lat, data[pos_id].lon);
   return results;
 }
-
 
 /**
  * CalculateEditDistance: Calculate edit distance between two location names

@@ -25,3 +25,6 @@ TEST(TrojanMapStudentTest, Test1) {
   std::cout << id << std::endl;
 }
 
+TEST(TrajanMapJudyTest, Test2) {
+  
+}
