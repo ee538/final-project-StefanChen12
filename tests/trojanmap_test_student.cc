@@ -32,10 +32,6 @@ TEST(TrojanMapStudentTest, Test1) {
   std::cout << str << std::endl;
 }
 
-<<<<<<< HEAD
 TEST(TrajanMapJudyTest, Test2) {
   
 }
-=======
-
->>>>>>> 3b327a9 (Update FindClosestName function)
