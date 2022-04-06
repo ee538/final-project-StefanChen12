@@ -13,15 +13,15 @@
  * @return {double}         : latitude
  */
 double TrojanMap::GetLat(const std::string& id) {
-    std::string name = GetName(id);
     // if id does not exist, return -1
-    if(name == "NULL") return -1;
-    else{
+    if(data.count(id) > 0){
       Node node = data[id];
       double lat = node.lat;
       return lat;
     }
-    
+    else{
+      return -1;
+    }
 }
 
 /**
@@ -31,12 +31,13 @@ double TrojanMap::GetLat(const std::string& id) {
  * @return {double}         : longitude
  */
 double TrojanMap::GetLon(const std::string& id) { 
-  std::string name = GetName(id);
-    if(name == "NULL") return -1;
-    else{
+    if(data.count(id) > 0){
       Node node = data[id];
       double lon = node.lon;
       return lon;
+    }
+    else{
+      return -1;
     }
 }
 
@@ -47,13 +48,15 @@ double TrojanMap::GetLon(const std::string& id) {
  * @return {std::string}    : name
  */
 std::string TrojanMap::GetName(const std::string& id) { 
-  if(data[id].name == "") return "Null";
+
+  if(data[id].name.compare("") == 0) return "NULL";
   else{
     Node node = data[id];
     std::string name = node.name;
     return name;
   }
 }
+
 
 /**
  * GetNeighborIDs: Get the neighbor ids of a Node. If id does not exist, return an empty vector.

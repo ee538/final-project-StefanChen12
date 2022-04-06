@@ -8,6 +8,9 @@
 /opencv
 .DS_Store
 
-WORKSPACE
+
 ncurses.BUILD
 opencv.BUILD
+WORKSPACE
+
+
