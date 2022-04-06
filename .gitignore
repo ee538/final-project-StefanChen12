@@ -7,3 +7,7 @@
 /bazel-*
 /opencv
 .DS_Store
+
+ncurses.BUILD
+opencv.BUILD
+WORKSPACE
