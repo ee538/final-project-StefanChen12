@@ -271,7 +271,55 @@ double TrojanMap::CalculatePathLength(const std::vector<std::string> &path) {
  */
 std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
     std::string location1_name, std::string location2_name) {
-  std::vector<std::string> path;
+      std::priority_queue<node> heap;
+      std::vector<std::string> path;
+      std::unordered_map<std::string, node> Data;
+      std::unordered_map<std::string, Node>::iterator it;
+      // create a map for all node types.
+      for(it = data.begin(); it != data.end(); it++){
+        node new_node(false, INT_MAX, it->first, "", it->second.neighbors);
+        Data[it->first] = new_node;
+      }
+
+      root_ID = GetID(location1_name);
+      end_ID = GetID(location2_name);
+
+      node root = Data[root_ID];
+      // distance between the start and the start is 0
+      root.distance = 0;
+      // set root as visited 
+      root.visit = true;
+      heap.add(root);
+
+      node end = Data[end_ID];
+      while(!heap.empty()){
+        node origin = heap.top();
+        for(auto neighbor : origin.neighbors){
+            node cur = Data[neighbor];
+            // update distance and prev of each neighbor
+            for(auto neig: cur.neighbors){
+              if(Data[neig].visit == false) continue;
+              else{
+                if(CalculateDistance(cur.id, neig) < cur.distance)
+                  cur.distance = CalculateDistance(cur.id, neig);
+                  cur.prev = neig;
+              }
+            }
+            if(cur.visit == false){
+              heap.add(cur);
+              cur.visit = true;
+            }
+        }
+        heap.pop();
+      }
+
+      std::string final_ID = end.id;
+      while(final_ID != root_ID){
+        path.push_back(final_ID);
+        final_ID = Data[final_ID].prev;
+      }
+      path.push_back(root_ID);
+      reverse(path.begin(), path.end());
   return path;
 }
 
@@ -444,3 +492,16 @@ void TrojanMap::CreateGraphFromCSVFile() {
   }
   fin.close();
 }
+
+
+bool node::operator<(const node& rhs) const{
+      return (distance < rhs.distance);
+  };
+
+bool node::operator>(const node& rhs) const{
+      return (distance > rhs.distance);
+  };
+
+bool node::operator==(const node& rhs) const{
+      return (distance == rhs.distance);
+  };

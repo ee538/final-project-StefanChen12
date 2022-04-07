@@ -30,6 +30,16 @@ TEST(TrojanMapStudentTest, Test1) {
   // Test GetClosestName.
   std::string str = m.FindClosestName("Ralp");
   std::cout << str << std::endl;
+
+  std::cout << "---------" << std::endl;
+
+  // Test CalculateShortestPath_Dijkstra
+  std::string start = "Ralphs";
+  std::string end = "ChickfilA";
+  std::vector<std::string> result = m.CalculateShortestPath_Dijkstra(start, end);
+  for(int i = 0; i < result.size(); i++){
+    std::cout << result[i] << std::endl;
+  }
 }
 
 TEST(TrajanMapJudyTest, Test2) {

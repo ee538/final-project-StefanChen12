@@ -32,10 +32,32 @@ class Node {
 
 // this node struct is for calculating the shrotest distance between two different places
 struct node{
-    bool child_visited = false; // check if all children have been visited, the default value is false
+    public:
+    node(){};
+    node(bool v, long d, std::string Id, std::string pre, std::vector<std::string> neig){
+        visit = v;
+        distance = d;
+        id = Id;
+        prev = pre;
+        neighbors = neig;
+    };
+    bool visit = false; // check if the node has been visited, the default value is false
     long distance = LONG_MAX; // the distance between this node and the start node, the default value is infinity.
     std::string id; // A unique id assign to each point
     std::string prev; // the previous node in the shortest path.
+    std::vector<std::string> neighbors; // the neighbors of the node.
+    // Returns true if distance is smaller than the distance of other node object
+    // and false otherwise.
+    bool operator<(const node& rhs) const;
+
+    // Returns true if grade is greater than the grade of other Student objects
+    // and false otherwise.
+    bool operator>(const node& rhs) const;
+
+    // Returns true if grade is equal to the grade of other Student objects and
+    // false otherwise.
+    bool operator==(const node& rhs) const;
+
 };
 
 class TrojanMap {
