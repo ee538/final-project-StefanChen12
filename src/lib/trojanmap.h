@@ -31,7 +31,7 @@ class Node {
 };
 
 // this node struct is for calculating the shrotest distance between two different places
-struct node{
+class node{
     public:
     node(){};
     node(bool v, long d, std::string Id, std::string pre, std::vector<std::string> neig){
@@ -39,10 +39,12 @@ struct node{
         distance = d;
         id = Id;
         prev = pre;
-        neighbors = neig;
+        for(int i = 0; i < neig.size(); i++){
+            neighbors.push_back(neig[i]);
+        }
     };
-    bool visit = false; // check if the node has been visited, the default value is false
-    long distance = LONG_MAX; // the distance between this node and the start node, the default value is infinity.
+    int visit; // check if the node has been visited, the default value is false
+    double distance; // the distance between this node and the start node, the default value is infinity.
     std::string id; // A unique id assign to each point
     std::string prev; // the previous node in the shortest path.
     std::vector<std::string> neighbors; // the neighbors of the node.
