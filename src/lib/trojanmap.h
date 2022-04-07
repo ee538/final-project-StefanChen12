@@ -43,7 +43,7 @@ class node{
             neighbors.push_back(neig[i]);
         }
     };
-    int visit; // check if the node has been visited, the default value is false
+    bool visit; // check if the node has been visited, false represents not visited and true represents visited.
     double distance; // the distance between this node and the start node, the default value is infinity.
     std::string id; // A unique id assign to each point
     std::string prev; // the previous node in the shortest path.

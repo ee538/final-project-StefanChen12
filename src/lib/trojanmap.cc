@@ -271,64 +271,28 @@ double TrojanMap::CalculatePathLength(const std::vector<std::string> &path) {
  */
 std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
     std::string location1_name, std::string location2_name) {
-      // define a minimum heap
+      // define a minimum heap.
       std::priority_queue<node, std::vector<node>, std::greater<node> > heap;
       std::vector<std::string> path;
+      // Define a map to record all the node objects.
       std::unordered_map<std::string, node> Data;
+      // an iterator for transforming Nodes in data into nodes in Data.
       std::unordered_map<std::string, Node>::iterator it;
-      // create a map for all node types.
       for(it = data.begin(); it != data.end(); it++){
-        node new_node(0, INT_MAX, it->first, "", it->second.neighbors);
+        node new_node(false, INT_MAX, it->first, "", it->second.neighbors);
         Data[it->first] = new_node;
       }
-    
+
+      // Get ID of start and end node.
       std::string root_ID = GetID(location1_name);
       std::string end_ID = GetID(location2_name);
 
-      // node& root = Data[root_ID];
-      // node& end = Data[end_ID];
-      // distance between the start and the start is 0
+      // set the distance from start to start as 0.
       Data[root_ID].distance = 0;
-      // set root as visited 
-      Data[root_ID].visit = 1;
-      // std::cout << Data[root_ID].id << std::endl;
-
-      // std::cout << Data[root_ID].visit << std::endl;
-
+      // set root as visited.
+      Data[root_ID].visit = true;
+      //push root into heap.
       heap.push(Data[root_ID]);
-
-      // std::string origin = heap.top().id;
-      //   for(auto neigh: Data[origin].neighbors){
-      //   // for(auto neighbor : Data[neigh].neighbors){
-      //   //   if(Data[neighbor].visit == 1){
-      //   //     std::cout << Data[neighbor].id << std::endl;
-      //   //   }
-      //   // }
-      //   std::cout << neigh << std::endl;
-          
-      //     for(auto neighbor: Data[neigh].neighbors){
-      //       if(Data[neighbor].visit == 0) continue;
-      //     // std::cout << Data[neighbor].distance << std::endl;
-      //     // std::cout << Data[neighbor].id << std::endl;
-      //       else{
-      //         // std::cout << neighbor << std::endl;
-      //         if(Data[neigh].distance > CalculateDistance(neighbor, neigh) + Data[neighbor].distance){
-      //           // std::cout<<Data[neigh].distance << std::endl;
-      //         // std::cout << Data[neighbor].distance << std::endl;
-      //         // std::cout << CalculateDistance(neighbor, neigh) + Data[neighbor].distance << std::endl;
-      //         // Data[neigh]
-      //         Data[neigh].distance = CalculateDistance(neigh, neighbor) + Data[neighbor].distance;
-      //         Data[neigh].prev = neighbor;
-      //         // std::cout << Data[neigh].distance << std::endl;
-      //         }
-      //       }
-      //     }
-      //   if(Data[neigh].visit == 0){
-      //     heap.push(Data[neigh]);
-      //     Data[neigh].visit = 1;
-      //     }
-      //   }
-
 
       while(!heap.empty()){
         // get id of the top node
@@ -341,7 +305,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
         // }
           
           for(auto neighbor: Data[neigh].neighbors){
-            if(Data[neighbor].visit == 0) continue;
+            if(Data[neighbor].visit == false) continue;
           // std::cout << Data[neighbor].distance << std::endl;
           // std::cout << Data[neighbor].id << std::endl;
             else{
@@ -352,7 +316,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
               }
             }
           }
-        if(Data[neigh].visit == 0){
+        if(Data[neigh].visit == false){
           heap.push(Data[neigh]);
           Data[neigh].visit = 1;
           }
@@ -369,43 +333,8 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
       path.push_back(root_ID);
       reverse(path.begin(), path.end());
 
-      // std::cout << Data[end_ID].prev << std::endl;
-      // std::cout << Data[Data[end_ID].prev].distance << std::endl;
-      // std::cout << CalculateDistance(end_ID, Data[end_ID].prev) << std::endl;
-      
       double distance = Data[Data[end_ID].prev].distance + CalculateDistance(end_ID, Data[end_ID].prev);
       std::cout << "the distance is:" << distance << std::endl;
-
-
-
-
-      // std::cout << "----------" << std::endl;
-      // while(!heap.empty()){
-      //   std::cout << heap.top().id << std::endl;
-      //   std::cout << heap.top().distance << std::endl;
-      //   std::cout << heap.top().prev << std::endl;
-      //   heap.pop();
-      // }
-      
-
-
-
-      
-      // for(auto neighbor : root.neighbors){
-      //     node cur = Data[neighbor];
-      //       // update distance and prev of each neighbor
-      //       for(auto neig: cur.neighbors){
-      //         if(Data[neig].visit == false) continue;
-      //         else{
-      //           if(CalculateDistance(cur.id, neig) + Data[neig].distance < cur.distance){
-      //             cur.distance = CalculateDistance(cur.id, neig) + Data[neig].distance;
-      //             cur.prev = neig;
-      //           }
-      //         }
-      //       }
-      //       std::cout<< cur.distance << std::endl;
-      //       path.push_back(cur.id);
-      // }
       
   return path;
 }
