@@ -35,7 +35,7 @@ TEST(TrojanMapStudentTest, Test1) {
 
   // Test CalculateShortestPath_Dijkstra
   std::string start = "Ralphs";
-  std::string end = "Electric Vehicle Charging Station";
+  std::string end = "Target";
   std::vector<std::string> result = m.CalculateShortestPath_Dijkstra(start, end);
   for(int i = 0; i < result.size(); i++){
     std::cout << result[i] << std::endl;
