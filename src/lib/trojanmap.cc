@@ -333,7 +333,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
       path.push_back(root_ID);
       reverse(path.begin(), path.end());
 
-      double distance = Data[Data[end_ID].prev].distance + CalculateDistance(end_ID, Data[end_ID].prev);
+      double distance = Data[end_ID].distance;
       std::cout << "the distance is:" << distance << std::endl;
       
   return path;
