@@ -348,11 +348,60 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
  * @return {std::vector<std::string>}       : path
  */
 std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
-    std::string location1_name, std::string location2_name){
+  std::string location1_name, std::string location2_name){
   std::vector<std::string> path;
+  std::unordered_map<std::string, node> Data;
+  std::unordered_map<std::string, Node>::iterator it;
+  for(it = data.begin(); it != data.end(); it++){
+      node new_node(false, INT_MAX, it->first, "", it->second.neighbors);
+      Data[it->first] = new_node;
+    }
+
+
+  // Get ID of start and end node.
+  std::string s = GetID(location1_name); // start
+  std::string v = GetID(location2_name); //end
+  Data[s].distance = 0;
+  int i = 3;
+  long res = CalculateShortestPath_Bellman_Ford_Helper(s, i, v);
+  std::cout <<"res:  " << res << std::endl;
+
   return path;
 }
 
+double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i, std::string v){
+    if (i == 0){
+          
+      return(v == s) ? 0 :INT_MAX;
+    }else{
+
+    double d = INT_MAX;
+    //std::cout << Data[0].neighbors << std::endl;  //no match for 'operator<<'
+    for (auto u : Data[v].neighbors){ // the process could get in here how to run this Data[0].neighbors 
+      std::cout << "s: " << s<< std::endl;
+      std::cout << "i: " << i<< std::endl;
+      std::cout << "u: " << u<< std::endl;
+  
+      //d =  std::min(d, CalculateShortestPath_Bellman_Ford_Helper(s, i-1, u)+ CalculateDistance(u, v));
+      
+    }
+    return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v), d);
+    }
+}
+
+  //while(check = true){
+    // auto origin = root_ID;
+    // for(auto root_neigh: Data[origin].neighbors){
+    //   if(Data[root_neigh].distance > CalculateDistance(root_neigh, root_ID) + Data[root_ID].distance){
+    //       Data[root_neigh].prev = root_ID;
+    //       Data[root_neigh].distance = CalculateDistance(root_neigh, root_ID) + Data[root_ID].distance;
+    //       std::cout << Data[root_neigh].id << std::endl;
+    //       std::cout << Data[root_neigh].distance << std::endl;
+
+    //   }
+    //   root_ID = root_neigh;
+      
+    // }
 /**
  * Travelling salesman problem: Given a list of locations, return the shortest
  * path which visit all the places and back to the start point.
