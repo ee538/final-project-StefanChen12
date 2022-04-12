@@ -34,11 +34,12 @@ class Node {
 class node{
     public:
     node(){};
-    node(bool v, long d, std::string Id, std::string pre, std::vector<std::string> neig){
+    node(bool v, long d, std::string Id, std::string pre, std::string backward, std::vector<std::string> neig){
         visit = v;
         distance = d;
         id = Id;
         prev = pre;
+        back = backward;
         for(int i = 0; i < neig.size(); i++){
             neighbors.push_back(neig[i]);
         }
@@ -47,6 +48,7 @@ class node{
     double distance; // the distance between this node and the start node, the default value is infinity.
     std::string id; // A unique id assign to each point
     std::string prev; // the previous node in the shortest path.
+    std::string back; // the previous node in the shortest path.
     std::vector<std::string> neighbors; // the neighbors of the node.
     // Returns true if distance is smaller than the distance of other node object
     // and false otherwise.
@@ -122,7 +124,7 @@ class TrojanMap {
                                                  std::string location2_name);
   std::vector<std::string> CalculateShortestPath_Bellman_Ford(std::string location1_name,
                                                  std::string location2_name);
-  double CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i, std::string v);
+  double CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i, std::string v, std::unordered_map<std::string, node> Data);
 
   // Given CSV filename, it read and parse locations data from CSV file,
   // and return locations vector for topological sort problem.
