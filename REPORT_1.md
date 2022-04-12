@@ -25,15 +25,14 @@ std::vector<std::string> TrojanMap::Autocomplete(std::string name){
   }
   return results;
 }
-1. High-level overview of your design (Use diagrams and pictures for your data structures).
 
-2.Time complexity
+
+Time complexity
 - O (data.size* Name.length)
 
-3.Time spent
+Time spent
 - 3 ms
 
-4. Discussion, conclusion, and lessons learned.
 
 
 ## 2
@@ -46,16 +45,14 @@ std::pair<double, double> TrojanMap::GetPosition(std::string name) {
   return results;
 }
 
-1.Structure
-- Get the information inside the Node.
 
-2.Time complexity. 
-- O(1)
+Time complexity. 
+- O(n)
 
-3.Time spent
+Time spent
 - 3 ms
 
-Lessons learned.
+Discussion, conclusion, and lessons learned.
 - Need to use id to get the Node. Couldn't use Name because Name didn't point to Naode.
 
 ## 3
@@ -99,7 +96,7 @@ int TrojanMap::editDist(std::string str1, std::string str2, int m, int n){
 }
 
 ##
-1. overview of the algorithm
+overview of the algorithm
 because we can use three different method to modify a single word. So when we compare two words, we can compare from the tail.
 if the tails are the same, them we can push backward. Using dynamic programing. dp[i][j] means the least numbers of changes that can transform
 the i-length word into the j-length word. so as what we said before, if the last alpha is the same. them we can know dp[m][n] = dp[m-1][n-1],
@@ -107,8 +104,8 @@ if not, then it either equals to dp[i - 1][j], which means we delete the last al
 insert one alpha at the end of the first word. And dp[i][j] = min( dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]), this is the recursion
 function.
 
-2.Time complexity.
+Time complexity.
 - O (m*n)
 
-3.Time spend:
+Time spend:
 232 ms
