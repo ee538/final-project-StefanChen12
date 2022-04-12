@@ -25,7 +25,7 @@ std::vector<std::string> TrojanMap::Autocomplete(std::string name){
   }
   return results;
 }
-
+```
 
 Time complexity
 - O (data.size* Name.length)
@@ -33,9 +33,10 @@ Time complexity
 Time spent
 - 3 ms
 
-
+---
 
 ## 2
+
 Implementation of GetPosition: 5 points. (Phase 1)
 ```cpp
 std::pair<double, double> TrojanMap::GetPosition(std::string name) {
@@ -44,7 +45,7 @@ std::pair<double, double> TrojanMap::GetPosition(std::string name) {
   std::pair<double, double> results(data[pos_id].lat, data[pos_id].lon);
   return results;
 }
-
+```
 
 Time complexity. 
 - O(n)
@@ -55,7 +56,10 @@ Time spent
 Discussion, conclusion, and lessons learned.
 - Need to use id to get the Node. Couldn't use Name because Name didn't point to Naode.
 
+---
+
 ## 3
+
 Implementation of EditDistance: 10 points. (Phase 1)
 ```cpp
 int TrojanMap::editDist(std::string str1, std::string str2, int m, int n){
@@ -94,9 +98,9 @@ int TrojanMap::editDist(std::string str1, std::string str2, int m, int n){
  
     return dp[m][n];
 }
+```
 
-##
-overview of the algorithm
+## overview of the algorithm
 because we can use three different method to modify a single word. So when we compare two words, we can compare from the tail.
 if the tails are the same, them we can push backward. Using dynamic programing. dp[i][j] means the least numbers of changes that can transform
 the i-length word into the j-length word. so as what we said before, if the last alpha is the same. them we can know dp[m][n] = dp[m-1][n-1],
@@ -107,5 +111,5 @@ function.
 Time complexity.
 - O (m*n)
 
-Time spend:
-232 ms
+Time spend
+- 232 ms
