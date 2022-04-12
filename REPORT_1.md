@@ -27,10 +27,10 @@ std::vector<std::string> TrojanMap::Autocomplete(std::string name){
 }
 1. High-level overview of your design (Use diagrams and pictures for your data structures).
 
-Time complexity
+2.Time complexity
 - O (data.size* Name.length)
 
-Time spent
+3.Time spent
 - 3 ms
 
 4. Discussion, conclusion, and lessons learned.
