@@ -122,7 +122,7 @@ int TrojanMap::CalculateEditDistance(std::string a, std::string b){
   int distance = 0;
   distance = pow(result1.first - result2.first, 2) + pow(result1.second - result2.second, 2);
   distance = pow(distance, 0.5);
-    return distance;
+  return distance;
 }
 
 int TrojanMap::Min(int x, int y, int z){
@@ -271,6 +271,7 @@ double TrojanMap::CalculatePathLength(const std::vector<std::string> &path) {
  */
 std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
     std::string location1_name, std::string location2_name) {
+      std::cout << "=========================Dijkstra=======================" << std::endl;
       // define a minimum heap.
       std::priority_queue<node, std::vector<node>, std::greater<node> > heap;
       std::vector<std::string> path;
@@ -279,7 +280,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
       // an iterator for transforming Nodes in data into nodes in Data.
       std::unordered_map<std::string, Node>::iterator it;
       for(it = data.begin(); it != data.end(); it++){
-        node new_node(false, INT_MAX, it->first, "", it->second.neighbors);
+        node new_node(false, INT_MAX, it->first, "", "", it->second.neighbors);
         Data[it->first] = new_node;
       }
 
@@ -348,9 +349,55 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
  * @return {std::vector<std::string>}       : path
  */
 std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
-    std::string location1_name, std::string location2_name){
+  std::string location1_name, std::string location2_name){
+  std::cout << "=========================Bellman Ford=======================" << std::endl;
   std::vector<std::string> path;
+  std::unordered_map<std::string, node> Data;
+  std::unordered_map<std::string, Node>::iterator it;
+
+  for(it = data.begin(); it != data.end(); it++){
+      node new_node(false, INT_MAX, it->first, "", "", it->second.neighbors);
+      Data[it->first] = new_node;
+  }
+  // Get ID of start and end node.
+  std::string s = GetID(location1_name); // start
+  std::string v = GetID(location2_name); // end
+  Data[s].back = "2";
+  Data[v].distance = 0;
+  int i = 2;
+  double distance = CalculateShortestPath_Bellman_Ford_Helper(s, i, v, Data);
+  
+  // std::cout << "=========================Check Correct=======================" << std::endl;
+   std::cout << "distance: " << distance<< std::endl;
+  // std::cout << "true.back: 5567724155" << std::endl;
+  // std::cout << "true.prev: 5237417654" << std::endl;
+  // std::cout << "=============================================================" << std::endl;
   return path;
+}
+
+double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i, std::string v, std::unordered_map<std::string, node> Data){
+    if (i == 0){
+      return(v == s) ? 0 :INT_MAX;
+    }else{
+    std::cout << "i: " << i<< std::endl;
+    std::cout << "start: " << s<< std::endl;
+    std::cout << "end: " << v<< std::endl;
+    double d = INT_MAX;
+  
+    for (auto u : Data[v].neighbors){
+      std::cout << "u: " << u<< std::endl;
+      Data[v].prev = u;
+      Data[u].back = v; 
+      
+      d =  std::min(d, CalculateShortestPath_Bellman_Ford_Helper(s, i-1, u, Data)+ CalculateDistance(u, v));
+      
+    }
+    std::cout << "path " << v << std::endl;
+
+    
+    return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
+    }
+    
 }
 
 /**

@@ -28,20 +28,31 @@ TEST(TrojanMapStudentTest, Test1) {
   std::cout<< "---------" << std::endl;
 
   // Test GetClosestName.
-  std::string str = m.FindClosestName("Ralp");
-  std::cout << str << std::endl;
+  std::string str1 = m.FindClosestName("Ralp");
+  std::cout << str1 << std::endl;
 
-  std::cout << "---------" << std::endl;
+  // Test CalculateEditDistance.
+  std::string str2 = m.FindClosestName("Rolph");
+  std::cout << str2 << std::endl;
 
-  // Test CalculateShortestPath_Dijkstra
-  std::string start = "Ralphs";
-  std::string end = "Target";
-  std::vector<std::string> result = m.CalculateShortestPath_Dijkstra(start, end);
-  for(int i = 0; i < result.size(); i++){
-    std::cout << result[i] << std::endl;
-  }
+  // std::cout << "---------" << std::endl;
+
+  // // Test CalculateShortestPath_Dijkstra
+  // std::string start = "CAVA";
+  // std::string end = "Honeybird";
+  // std::vector<std::string> result = m.CalculateShortestPath_Dijkstra(start, end);
+  // for(int i = 0; i < result.size(); i++){
+  //   std::cout << result[i] << std::endl;
+  // }
+  // std::string s = m.GetID(start); // start
+  // std::string v = m.GetID(end); // end
+  // double res = m.CalculateDistance(s , v);
+
+
+  // std::vector<std::string> result1 = m.CalculateShortestPath_Bellman_Ford(start, end);
+
 }
 
-TEST(TrajanMapJudyTest, Test2) {
+// TEST(TrajanMapJudyTest, Test2) {
   
-}
+// }
