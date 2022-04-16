@@ -466,7 +466,7 @@ std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &l
 }
 
 /**
- * inSquare: Give a id retunr whether it is in square or not.
+ * inSquare: Give a id return whether it is in square or not.
  *
  * @param  {std::string} id            : location id
  * @param  {std::vector<double>} square: four vertexes of the square area
@@ -497,6 +497,7 @@ std::vector<std::string> TrojanMap::GetSubgraph(std::vector<double> &square) {
  * @return {bool}: whether there is a cycle or not
  */
 bool TrojanMap::CycleDetection(std::vector<std::string> &subgraph, std::vector<double> &square) {
+
   return false;
 }
 
