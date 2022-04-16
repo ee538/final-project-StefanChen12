@@ -272,6 +272,7 @@ double TrojanMap::CalculatePathLength(const std::vector<std::string> &path) {
 std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
     std::string location1_name, std::string location2_name) {
       std::cout << "=========================Dijkstra=======================" << std::endl;
+      StoreStartTime();
       // define a minimum heap.
       std::priority_queue<node, std::vector<node>, std::greater<node> > heap;
       std::vector<std::string> path;
@@ -336,7 +337,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
 
       double distance = Data[end_ID].distance;
       std::cout << "the distance is:" << distance << std::endl;
-      
+      PrintAndGetDuration();
   return path;
 }
 
@@ -351,6 +352,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
 std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   std::string location1_name, std::string location2_name){
   std::cout << "=========================Bellman Ford=======================" << std::endl;
+  StoreStartTime();
   std::vector<std::string> path;
   std::unordered_map<std::string, node> Data;
   std::unordered_map<std::string, Node>::iterator it;
@@ -393,8 +395,8 @@ double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i
       
     }
     std::cout << "path " << v << std::endl;
+    PrintAndGetDuration();
 
-    
     return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
     }
     
