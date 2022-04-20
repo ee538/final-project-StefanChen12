@@ -16,6 +16,7 @@
 #include <sstream>
 #include <climits>
 #include <cmath>
+#include <chrono>
 
 // A Node is the location of one point in the map.
 class Node {
@@ -43,6 +44,7 @@ class node{
         for(int i = 0; i < neig.size(); i++){
             neighbors.push_back(neig[i]);
         }
+        //stop = s;
     };
     bool visit; // check if the node has been visited, false represents not visited and true represents visited.
     double distance; // the distance between this node and the start node, the default value is infinity.
@@ -50,6 +52,7 @@ class node{
     std::string prev; // the previous node in the shortest path.
     std::string back; // the previous node in the shortest path.
     std::vector<std::string> neighbors; // the neighbors of the node.
+    //int stop;
     // Returns true if distance is smaller than the distance of other node object
     // and false otherwise.
     bool operator<(const node& rhs) const;
@@ -72,7 +75,7 @@ class TrojanMap {
   // A map of ids to Nodes.
   std::unordered_map<std::string, Node> data;  
   std::unordered_map<std::string, Node> Data;  
-
+  std::unordered_map<std::string, Node> top_data;  
   //-----------------------------------------------------
   // Read in the data
   void CreateGraphFromCSVFile();

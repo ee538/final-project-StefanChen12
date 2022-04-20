@@ -373,20 +373,11 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   Data[end].distance = 0;
   Data[start].distance = INT_MAX;
   // for all nodes in path
-  for (int i = 0; i <= Data.size() - 1 ; i++){
-    int i = Data.size() - 1 ;
+  for (int i = 0; i <= Data.size() - 1 ; i++){ 
     Final_distance = CalculateShortestPath_Bellman_Ford_Helper(start, i, end, Data);
-    // if (Final_distance == pre_dis)
-    //   stop ++;
-    // else{
-    //   pre_dis = Final_distance;
-    //   }
-    // if (stop == 10)
-    //     break;
-    
-    
+      
   }
-  
+
 
   Data[end].back = "";
   Data[start].prev = "";
@@ -423,11 +414,10 @@ double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i
         Data[u].distance = (CalculateDistance(u,v) + Data[v].distance);
 
       }
-           Data[u].back = v;
+      Data[u].back = v;
       d =  std::min(d, (CalculateShortestPath_Bellman_Ford_Helper(s, i-1, u, Data)+ dis));
       
     }
-    std::cout << "path " << v << std::endl;
     
 
     return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
@@ -469,6 +459,18 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
  */
 std::vector<std::string> TrojanMap::ReadLocationsFromCSVFile(std::string locations_filename){
   std::vector<std::string> location_names_from_csv;
+  std::fstream fin;
+  fin.open("input/topologicalsort_locations.csv", std::ios::in);
+  std::string line, word;
+  
+  getline(fin, line);
+  while (getline(fin, line)) {
+    // std::cout << "f:   " << fin <<std::endl;
+    // std::cout << "l:   " << line <<std::endl;
+    std::cout << "w:   " << word <<std::endl;
+  }
+  fin.close();
+  // std::cout << location_names_from_csv <<std::endl;
   return location_names_from_csv;
 }
 
