@@ -272,7 +272,7 @@ double TrojanMap::CalculatePathLength(const std::vector<std::string> &path) {
 std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
     std::string location1_name, std::string location2_name) {
       std::cout << "=========================Dijkstra=======================" << std::endl;
-      StoreStartTime();
+      // StoreStartTime();
       // define a minimum heap.
       std::priority_queue<node, std::vector<node>, std::greater<node> > heap;
       std::vector<std::string> path;
@@ -337,7 +337,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
 
       double distance = Data[end_ID].distance;
       std::cout << "the distance is:" << distance << std::endl;
-      PrintAndGetDuration();
+      // PrintAndGetDuration();
   return path;
 }
 
@@ -351,9 +351,9 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
  */
 std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   std::string location1_name, std::string location2_name){
-    // define types
-    StoreStartTime();
-    std::cout << "=========================Bellman Ford=======================" << std::endl;
+  std::cout << "=========================Bellman Ford=======================" << std::endl;
+  // StoreStartTime();
+
   std::vector<std::string> path;
   std::string start = GetID(location1_name); // start
   std::string end = GetID(location2_name); // end
@@ -377,7 +377,6 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
     Final_distance = CalculateShortestPath_Bellman_Ford_Helper(start, i, end, Data);
       
   }
-
 
   Data[end].back = "";
   Data[start].prev = "";
@@ -418,8 +417,12 @@ double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i
       d =  std::min(d, (CalculateShortestPath_Bellman_Ford_Helper(s, i-1, u, Data)+ dis));
       
     }
+<<<<<<< HEAD
     
 
+=======
+    std::cout << "path " << v << std::endl;
+>>>>>>> 19b08bfc566000078cdca2d21ba3f65028247fb3
     return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
     }
     
@@ -508,7 +511,11 @@ std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &l
  * @return {bool}                      : in square or not
  */
 bool TrojanMap::inSquare(std::string id, std::vector<double> &square) {
-  return false;
+  double Lon = GetLon(id);
+  double Lat = GetLat(id);
+  // std::cout << std::setprecision(20) << "longtitude:" << Lon << std::endl;
+  // std::cout << std::setprecision(20) << "latitude:" << Lat << std::endl;
+  return (Lon >= square[0] && Lon <= square[1] && Lat <= square[2] && Lat >= square[3]);
 }
 
 /**
@@ -520,6 +527,13 @@ bool TrojanMap::inSquare(std::string id, std::vector<double> &square) {
 std::vector<std::string> TrojanMap::GetSubgraph(std::vector<double> &square) {
   // include all the nodes in subgraph
   std::vector<std::string> subgraph;
+  std::unordered_map<std::string, Node>::iterator it;
+  for(it = data.begin(); it != data.end(); it++){
+    std::string id = it->first;
+    if(inSquare(id, square)){
+      subgraph.push_back(it->first);
+    }
+  }
   return subgraph;
 }
 
@@ -531,8 +545,36 @@ std::vector<std::string> TrojanMap::GetSubgraph(std::vector<double> &square) {
  * @param {std::vector<double>} square: four vertexes of the square area
  * @return {bool}: whether there is a cycle or not
  */
-bool TrojanMap::CycleDetection(std::vector<std::string> &subgraph, std::vector<double> &square) {
 
+bool TrojanMap::CycleDetection(std::vector<std::string> &subgraph, std::vector<double> &square) {
+  for(int i = 0; i < subgraph.size(); i++){
+    std::set<std::string> visited;
+    std::vector<std::string> neighbors = GetNeighborIDs(subgraph[i]);
+    // put current node into visited.
+    visited.insert(subgraph[i]);
+    for(auto neigh : neighbors){
+      if(!inSquare(neigh, square)) continue;
+      else{
+        if(isCyclic(neigh, visited, subgraph[i], square) == true) return true;
+      }
+    }
+  }
+  return false;
+}
+
+
+bool TrojanMap::isCyclic(std::string node, std::set<std::string> &visited, std::string parent, std::vector<double> &square) {
+  visited.insert(node);
+  for(auto neighbor : GetNeighborIDs(node)){
+    // first we have to decide whether the node is within the subgraph
+    if(!inSquare(neighbor, square)) continue;
+    // if the neighbor of node is not visited
+    if(!visited.count(neighbor)){
+      if(isCyclic(neighbor, visited, node, square) == true) return true;
+    }else{
+      if(neighbor != parent) return true;
+    }
+  }
   return false;
 }
 
