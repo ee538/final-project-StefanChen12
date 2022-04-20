@@ -368,12 +368,19 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
 
   double pre_dis;
   int stop = 0;
-
+  Data[end].distance = 0;
+  Data[start].distance = INT_MAX;
   // for all nodes in path
-  for (int i = 0; i <= Data.size(); i++){
-  
+  for (int i = 0; i <= Data.size() - 1 ; i++){
+    int i = Data.size() - 1 ;
     Final_distance = CalculateShortestPath_Bellman_Ford_Helper(start, i, end, Data);
-    
+    if (Final_distance == pre_dis)
+      stop ++;
+    else{
+      pre_dis = Final_distance;
+      }
+    if (stop == 10)
+        break;
     
     
   }
@@ -381,7 +388,8 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
 
   Data[end].back = "";
   Data[start].prev = "";
-  
+
+
   while (start != ""){
     path.push_back(start);
     start = Data[start].back;
@@ -402,14 +410,21 @@ double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i
   
 
     for (auto u : pre){
-
+    
       double dis = CalculateDistance(u,v);
-      Data[v].prev = u;
-      Data[u].back = v;   
+      
+      if (Data[u].distance > CalculateDistance(u,v) + Data[v].distance){
+        
+        
+        
+        Data[u].distance = (CalculateDistance(u,v) + Data[v].distance);
+
+      }
+           Data[u].back = v;
       d =  std::min(d, (CalculateShortestPath_Bellman_Ford_Helper(s, i-1, u, Data)+ dis));
       
     }
-    //std::cout << std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d) << std::endl;
+    
     return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
     }
     
