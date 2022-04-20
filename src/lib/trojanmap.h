@@ -125,7 +125,7 @@ class TrojanMap {
                                                  std::string location2_name);
   std::vector<std::string> CalculateShortestPath_Bellman_Ford(std::string location1_name,
                                                  std::string location2_name);
-  double CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i, std::string v, std::unordered_map<std::string, node> Data);
+  double CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i, std::string v, std::unordered_map<std::string, node> &Data);
 
   // Given CSV filename, it read and parse locations data from CSV file,
   // and return locations vector for topological sort problem.
