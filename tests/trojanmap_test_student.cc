@@ -1,5 +1,7 @@
 #include "gtest/gtest.h"
 #include "src/lib/trojanmap.h"
+#include <algorithm>
+#include <string>
 
 
 TEST(TrojanMapStudentTest, Test1) {
@@ -40,16 +42,19 @@ TEST(TrojanMapStudentTest, Test1) {
   // Test CalculateShortestPath_Dijkstra
   std::string start = "CAVA";
   std::string end = "Target";
-  std::vector<std::string> result = m.CalculateShortestPath_Dijkstra(start, end);
-  for(int i = 0; i < result.size(); i++){
-    std::cout << result[i] << std::endl;
-  }
+  // std::vector<std::string> result = m.CalculateShortestPath_Dijkstra(start, end);
+  // for(int i = 0; i < result.size(); i++){
+  //   std::cout << result[i] << std::endl;
+  // }
 
-  // Test CalculateShortestPath_Bellman_Ford
-  std::vector<std::string> result1 = m.CalculateShortestPath_Bellman_Ford(start, end);
-  for(int i = 0; i < result1.size(); i++){
-    std::cout << result1[i] << std::endl;
-  }
+  // // Test CalculateShortestPath_Bellman_Ford
+  // std::vector<std::string> result1 = m.CalculateShortestPath_Bellman_Ford(start, end);
+  // for(int i = 0; i < result1.size(); i++){
+  //   std::cout << result1[i] << std::endl;
+  // }]
+  auto s = m.ReadLocationsFromCSVFile("some");
+
+  
 }
 TEST(TrojanmapTest, cyclDetection){
    TrojanMap m;
