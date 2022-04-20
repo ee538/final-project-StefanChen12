@@ -53,7 +53,7 @@ TEST(TrojanMapStudentTest, Test1) {
   //   std::cout << result1[i] << std::endl;
   // }]
 
-  std::string file = "/Home/538/final-project-StefanChen12/input/topologicalsort_locations.csv";
+  std::string file = "/home/ee538/538/final-project-StefanChen12/input/topologicalsort_locations.csv";
   std::vector<std::string> result = m.ReadLocationsFromCSVFile(file);
   for(int i = 0; i < result.size(); i++){
       std::cout << result[i] << std::endl;

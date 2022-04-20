@@ -456,21 +456,22 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
  */
 std::vector<std::string> TrojanMap::ReadLocationsFromCSVFile(std::string locations_filename){
   std::vector<std::string> location_names_from_csv;
+
   std::ifstream fp(locations_filename);
   std::string line;
-  
   getline(fp, line);
-  while (getline(fp, line)) {
-  
+  while(getline(fp, line)){
+    //std::vector<std::string> data_line;
     std::string name;
-
     std::istringstream readstr(line);
-    getline(readstr,name);
+    //for(int j = 0; j < 1; j++){
+      getline(readstr, name);
+    //  data_line.push_back(number);
+    //}
     location_names_from_csv.push_back(name);
-
   }
-
   return location_names_from_csv;
+
 }
 
 /**
