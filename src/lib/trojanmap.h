@@ -19,6 +19,7 @@
 #include <set>
 #include <chrono>
 
+
 // A Node is the location of one point in the map.
 class Node {
   public:
@@ -168,7 +169,9 @@ class TrojanMap {
   // cycle or not in this subgraph.
   bool CycleDetection(std::vector<std::string> &subgraph, std::vector<double> &square);
 
-  bool isCyclic(std::string node, std::set<std::string> &visited, std::string parent, std::vector<double> &square) ;
+
+  bool isCyclic(std::string node, std::set<std::string> &visited, std::string parent, std::vector<double> &square);
+
 
   // Given a location id and k, find the k closest points on the map
   std::vector<std::string> FindNearby(std::string, std::string, double, int);

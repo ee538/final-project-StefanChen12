@@ -67,6 +67,17 @@ TEST(TrojanmapTest, cyclDetection){
   EXPECT_EQ(result2, false);
 }
 
+TEST(Trojanmaptest, Cycledetection){
+    TrojanMap m;
+    std::string file = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_dependencies.csv";
+    std::vector<std::vector<std::string>> result = m.ReadDependenciesFromCSVFile(file);
+    for(int i = 0; i < result.size(); i++){
+      for(int j = 0; j < result[i].size(); j++){
+        std::cout << result[i][j] << std::endl;
+      }
+    }
+}
+
 // TEST(TrajanMapJudyTest, Test2) {
   
 // }

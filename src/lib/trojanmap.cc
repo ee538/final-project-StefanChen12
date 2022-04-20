@@ -1,8 +1,8 @@
 #include "trojanmap.h"
 #include <algorithm>
 #include <string>
-
-
+#include <iomanip>
+#include <set>
 //-----------------------------------------------------
 // TODO: Student should implement the following:
 //-----------------------------------------------------
@@ -349,9 +349,11 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
  * @param  {std::string} location2_name     : goal
  * @return {std::vector<std::string>}       : path
  */
+
 std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   std::string location1_name, std::string location2_name){
   std::cout << "=========================Bellman Ford=======================" << std::endl;
+
   StoreStartTime();
 
   std::vector<std::string> path;
@@ -366,6 +368,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
     node new_node(false, INT_MAX, it->first, "", "", it->second.neighbors);
     Data[it->first] = new_node;
   }
+
   double Final_distance;
 
   double pre_dis;
@@ -417,7 +420,6 @@ double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i
       d =  std::min(d, (CalculateShortestPath_Bellman_Ford_Helper(s, i-1, u, Data)+ dis));
       
     }
-    
 
     return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
     }
@@ -482,6 +484,19 @@ std::vector<std::string> TrojanMap::ReadLocationsFromCSVFile(std::string locatio
  */
 std::vector<std::vector<std::string>> TrojanMap::ReadDependenciesFromCSVFile(std::string dependencies_filename){
   std::vector<std::vector<std::string>> dependencies_from_csv;
+  std::ifstream fp(dependencies_filename);
+  std::string line;
+  getline(fp, line);
+  while(getline(fp, line)){
+    std::vector<std::string> data_line;
+    std::string number;
+    std::istringstream readstr(line);
+    for(int j = 0; j < 2; j++){
+      getline(readstr, number, ',');
+      data_line.push_back(number);
+    }
+    dependencies_from_csv.push_back(data_line);
+  }
   return dependencies_from_csv;
 }
 
