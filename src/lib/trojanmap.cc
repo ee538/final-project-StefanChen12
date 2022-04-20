@@ -512,6 +512,24 @@ std::vector<std::vector<std::string>> TrojanMap::ReadDependenciesFromCSVFile(std
 std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &locations,
                                                      std::vector<std::vector<std::string>> &dependencies){
   std::vector<std::string> result;
+  std::unordered_map<std::string, child> top_data;
+  for auto i : locations{
+    for auto j : dependencies{
+      if i = j[0]{
+        top_data[i].child = j[1];
+      }
+    }
+  }
+
+  
+
+
+
+    
+
+  
+
+
   return result;                                                     
 }
 

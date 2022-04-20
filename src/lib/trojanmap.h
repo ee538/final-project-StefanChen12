@@ -77,7 +77,7 @@ class TrojanMap {
   // A map of ids to Nodes.
   std::unordered_map<std::string, Node> data;  
   std::unordered_map<std::string, Node> Data;  
-  std::unordered_map<std::string, Node> top_data;  
+  std::unordered_map<std::string, Child> top_data;  
   //-----------------------------------------------------
   // Read in the data
   void CreateGraphFromCSVFile();
