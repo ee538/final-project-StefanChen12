@@ -25,6 +25,14 @@ class Node {
   public:
     Node(){};
     Node(const Node &n){id = n.id; lat = n.lat; lon = n.lon; name = n.name; neighbors = n.neighbors; attributes = n.attributes;};
+    Node(std::string Id, double Lat, double Lon, std::string Name, std::vector<std::string> Neighbors, std::unordered_set<std::string> Attributes){
+      id = Id;
+      lat = Lat;
+      Lon = lon;
+      name = Name;
+      neighbors = Neighbors;
+      attributes = Attributes;
+    }
     std::string id;    // A unique id assign to each point
     double lat;        // Latitude
     double lon;        // Longitude

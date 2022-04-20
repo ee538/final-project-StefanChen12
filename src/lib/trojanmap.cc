@@ -511,6 +511,8 @@ std::vector<std::vector<std::string>> TrojanMap::ReadDependenciesFromCSVFile(std
  */
 std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &locations,
                                                      std::vector<std::vector<std::string>> &dependencies){
+  
+  
   std::vector<std::string> result;
   return result;                                                     
 }

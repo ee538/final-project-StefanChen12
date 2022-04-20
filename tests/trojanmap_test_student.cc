@@ -53,7 +53,7 @@ TEST(TrojanMapStudentTest, Test1) {
   //   std::cout << result1[i] << std::endl;
   // }]
 
-  std::string file = "/home/ee538/538/final-project-StefanChen12/input/topologicalsort_locations.csv";
+  std::string file = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_locations.csv";
   std::vector<std::string> result = m.ReadLocationsFromCSVFile(file);
   for(int i = 0; i < result.size(); i++){
       std::cout << result[i] << std::endl;
@@ -76,18 +76,16 @@ TEST(TrojanmapTest, cyclDetection){
   auto sub2 = m.GetSubgraph(square2);
   bool result2 = m.CycleDetection(sub2, square2);
   EXPECT_EQ(result2, false);
+
+  std::string file = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_dependencies.csv";
+  std::vector<std::vector<std::string>> result = m.ReadDependenciesFromCSVFile(file);
+  for(int i = 0; i < result.size(); i++){
+    for(int j = 0; j < result[i].size(); j++){
+      std::cout << result[i][j] << std::endl;
+    }
+  }
 }
 
-TEST(Trojanmaptest, Cycledetection){
-    TrojanMap m;
-    std::string file = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_dependencies.csv";
-    std::vector<std::vector<std::string>> result = m.ReadDependenciesFromCSVFile(file);
-    for(int i = 0; i < result.size(); i++){
-      for(int j = 0; j < result[i].size(); j++){
-        std::cout << result[i][j] << std::endl;
-      }
-    }
-}
 
 // TEST(TrajanMapJudyTest, Test2) {
   
