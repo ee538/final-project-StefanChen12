@@ -150,7 +150,8 @@ class TrojanMap {
   // Given a vector of location names, it should return a sorting of nodes
   // that satisfies the given dependencies.
   std::vector<std::string> DeliveringTrojan(std::vector<std::string> &location_names,
-                                            std::vector<std::vector<std::string>> &dependencies);
+                                            std::vector<std::vector<std::string>> &dependencies);   
+  void MapSetGraph DFS_helper_with_topo(int root, std::map <int, int> &marks, std::vector<int> &topo_list);
 
   // Given a vector of location ids, it should reorder them such that the path
   // that covers all these points has the minimum length.

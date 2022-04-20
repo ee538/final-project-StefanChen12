@@ -58,6 +58,7 @@ TEST(TrojanMapStudentTest, Test1) {
   for(int i = 0; i < result.size(); i++){
       std::cout << result[i] << std::endl;
     }
+
 }
   
 
@@ -77,13 +78,22 @@ TEST(TrojanmapTest, cyclDetection){
   bool result2 = m.CycleDetection(sub2, square2);
   EXPECT_EQ(result2, false);
 
-  std::string file = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_dependencies.csv";
-  std::vector<std::vector<std::string>> result = m.ReadDependenciesFromCSVFile(file);
-  for(int i = 0; i < result.size(); i++){
-    for(int j = 0; j < result[i].size(); j++){
-      std::cout << result[i][j] << std::endl;
+
+TEST(Trojanmaptest, Cycledetection){
+    TrojanMap m;
+    std::string file = "/home/ee538/538/final-project-StefanChen12/input/topologicalsort_dependencies.csv";
+    std::vector<std::vector<std::string>> result = m.ReadDependenciesFromCSVFile(file);
+    for(int i = 0; i < result.size(); i++){
+      for(int j = 0; j < result[i].size(); j++){
+        std::cout << result[i][j] << std::endl;
+      }
     }
-  }
+    std::string loc = "/home/ee538/538/final-project-StefanChen12/input/topologicalsort_locations.csv";
+    std::vector<std::string> res = m.ReadLocationsFromCSVFile(loc);
+    for(int i = 0; i < res.size(); i++){
+      std::cout << res[i] << std::endl;
+    }
+
 }
 
 
