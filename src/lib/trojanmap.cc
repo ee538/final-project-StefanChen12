@@ -352,6 +352,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
 std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   std::string location1_name, std::string location2_name){
     // define types
+    StoreStartTime();
     std::cout << "=========================Bellman Ford=======================" << std::endl;
   std::vector<std::string> path;
   std::string start = GetID(location1_name); // start
@@ -397,6 +398,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
     
   }
   std::cout << "the distance is:" << Final_distance << std::endl;
+  PrintAndGetDuration();
 return path;
 }
   
@@ -425,13 +427,9 @@ double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i
       d =  std::min(d, (CalculateShortestPath_Bellman_Ford_Helper(s, i-1, u, Data)+ dis));
       
     }
-<<<<<<< HEAD
     std::cout << "path " << v << std::endl;
-    PrintAndGetDuration();
-
-=======
     
->>>>>>> bellman
+
     return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
     }
     
