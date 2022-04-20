@@ -25,6 +25,14 @@ class Node {
   public:
     Node(){};
     Node(const Node &n){id = n.id; lat = n.lat; lon = n.lon; name = n.name; neighbors = n.neighbors; attributes = n.attributes;};
+    Node(std::string Id, double Lat, double Lon, std::string Name, std::vector<std::string> Neighbors, std::unordered_set<std::string> Attributes){
+      id = Id;
+      lat = Lat;
+      Lon = lon;
+      name = Name;
+      neighbors = Neighbors;
+      attributes = Attributes;
+    }
     std::string id;    // A unique id assign to each point
     double lat;        // Latitude
     double lon;        // Longitude
@@ -77,7 +85,7 @@ class TrojanMap {
   // A map of ids to Nodes.
   std::unordered_map<std::string, Node> data;  
   std::unordered_map<std::string, Node> Data;  
-  std::unordered_map<std::string, Child> top_data;  
+  std::unordered_map<std::string, Node> top_data;  
   //-----------------------------------------------------
   // Read in the data
   void CreateGraphFromCSVFile();
@@ -142,7 +150,8 @@ class TrojanMap {
   // Given a vector of location names, it should return a sorting of nodes
   // that satisfies the given dependencies.
   std::vector<std::string> DeliveringTrojan(std::vector<std::string> &location_names,
-                                            std::vector<std::vector<std::string>> &dependencies);
+                                            std::vector<std::vector<std::string>> &dependencies);   
+  void MapSetGraph DFS_helper_with_topo(int root, std::map <int, int> &marks, std::vector<int> &topo_list);
 
   // Given a vector of location ids, it should reorder them such that the path
   // that covers all these points has the minimum length.
