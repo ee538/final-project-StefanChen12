@@ -63,7 +63,7 @@ TEST(TrojanMapStudentTest, Test1) {
   
 
   
-TEST(TrojanmapTest, cyclDetection){
+TEST(TrojanmapTest, cyclDetection) {
    TrojanMap m;
   
   // Test case 1
@@ -77,22 +77,34 @@ TEST(TrojanmapTest, cyclDetection){
   auto sub2 = m.GetSubgraph(square2);
   bool result2 = m.CycleDetection(sub2, square2);
   EXPECT_EQ(result2, false);
+}
 
 
-TEST(Trojanmaptest, Cycledetection){
+TEST(Trojanmaptest, Cycledetection) {
     TrojanMap m;
-    std::string file = "/home/ee538/538/final-project-StefanChen12/input/topologicalsort_dependencies.csv";
+    std::string file = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_dependencies.csv";
     std::vector<std::vector<std::string>> result = m.ReadDependenciesFromCSVFile(file);
     for(int i = 0; i < result.size(); i++){
       for(int j = 0; j < result[i].size(); j++){
         std::cout << result[i][j] << std::endl;
       }
     }
-    std::string loc = "/home/ee538/538/final-project-StefanChen12/input/topologicalsort_locations.csv";
+
+
+  std::cout << "-----------------" << std::endl;
+    std::string loc = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_locations.csv";
     std::vector<std::string> res = m.ReadLocationsFromCSVFile(loc);
     for(int i = 0; i < res.size(); i++){
       std::cout << res[i] << std::endl;
     }
+
+
+  // testing DeliveringTrojan
+  std::vector<std::string> location_names = {"Ralphs", "Chick-fil-A", "KFC"};
+  std::vector<std::vector<std::string>> dependencies = {{"Ralphs","KFC"}, {"Ralphs","Chick-fil-A"}, {"KFC","Chick-fil-A"}};
+  std::vector<std::string> topo_result = m.DeliveringTrojan(location_names, dependencies);
+  std::vector<std::string> gt ={"Ralphs", "KFC","Chick-fil-A"};
+  EXPECT_EQ(topo_result, gt);
 
 }
 

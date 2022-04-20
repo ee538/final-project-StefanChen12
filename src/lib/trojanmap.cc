@@ -516,7 +516,7 @@ std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &l
   std::unordered_map<std::string, Node> top_data;
   for (auto i : locations){
     for (auto j : dependencies){
-      if (i = j[0]){
+      if (i == j[0]){
         top_data[i].name = i;
         top_data[i].neighbors.push_back(j[1]);
       }
@@ -527,17 +527,19 @@ std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &l
     std::set <std::string> marks;
     std::vector<std::string> topo_list;
     DFS_helper_with_topo(i, marks, topo_list, top_data);
-    if (topolist.size() = locations.size()){
-      result = topo_list;
+    if (topo_list.size() == locations.size()){
+      for(int j = 0; j < topo_list.size(); j++){
+        result.push_back(topo_list[j]);
+      }
       break;
     }
   }
-  std::reverse(result);
+  reverse(result.begin(), result.end());
   return result;                                                     
 }
 
 
-void Trojanmap::DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, Node> &top_data){
+void TrojanMap::DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, Node> &top_data){
   marks.insert(root);
   for(auto neigh : top_data[root].neighbors){
     if(!marks.count(neigh)){
