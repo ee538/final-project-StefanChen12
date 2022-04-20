@@ -499,42 +499,47 @@ std::vector<std::vector<std::string>> TrojanMap::ReadDependenciesFromCSVFile(std
 std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &locations,
                                                      std::vector<std::vector<std::string>> &dependencies){
   
-  
   std::vector<std::string> result;
   std::unordered_map<std::string, Node> top_data;
   for (auto i : locations){
     for (auto j : dependencies){
       if (i = j[0]){
-        top_data[i].neighbors.push_back = j[1];
+        top_data[i].name = i;
+        top_data[i].neighbors.push_back(j[1]);
       }
     }
   }
 
-  std::map <int, int> marks;
-  std::vector<std::string> topo_list;
   for (auto i : locations){
-    topo_list = DFS_helper_with_topo(i, marks, topo_list, top_data);
+    std::set <std::string> marks;
+    std::vector<std::string> topo_list;
+    DFS_helper_with_topo(i, marks, topo_list, top_data);
     if (topolist.size() = locations.size()){
       result = topo_list;
+      break;
     }
   }
-
-
+  std::reverse(result);
   return result;                                                     
 }
 
 
-std::vector<std::string> Trojanmap::DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, Node> top_data;){
+void Trojanmap::DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, Node> &top_data){
   marks.insert(root);
-  if all root.neighbors == marks.string && root.neighbors = 0{
-    topo_list.push_back(root);
-  }
-  else{
-    for (auto neigh : root.neighbors){
+  for(auto neigh : top_data[root].neighbors){
+    if(!marks.count(neigh)){
       DFS_helper_with_topo(neigh, marks, topo_list, top_data);
     }
   }
-  return top_list;
+  topo_list.push_back(root);
+  // if all root.neighbors == marks.string && root.neighbors = 0{
+  //   topo_list.push_back(root);
+  // }
+  // else{
+  //   for (auto neigh : root.neighbors){
+  //     DFS_helper_with_topo(neigh, marks, topo_list, top_data);
+  //   }
+  // }
 }
 
 
