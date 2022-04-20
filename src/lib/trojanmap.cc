@@ -534,7 +534,7 @@ std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &l
       break;
     }
   }
-  reverse(result.begin(), result.end);
+  reverse(result.begin(), result.end());
   return result;                                                     
 }
 
