@@ -45,12 +45,9 @@ TEST(TrojanMapStudentTest, Test1) {
     std::cout << result[i] << std::endl;
   }
 
+  // Test CalculateShortestPath_Bellman_Ford
   std::vector<std::string> result1 = m.CalculateShortestPath_Bellman_Ford(start, end);
   for(int i = 0; i < result1.size(); i++){
     std::cout << result1[i] << std::endl;
   }
 }
-
-// TEST(TrajanMapJudyTest, Test2) {
-  
-// }
