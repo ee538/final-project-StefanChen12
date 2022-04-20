@@ -456,13 +456,12 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
  */
 std::vector<std::string> TrojanMap::ReadLocationsFromCSVFile(std::string locations_filename){
   std::vector<std::string> location_names_from_csv;
-  std::fstream fin;
-  fin.open("input/topologicalsort_locations", std::ios::in);
+  std::fstream fp(locations_filename);
   std::string line;
-
-  getline(fin, line);
-  while (getline(fin, line)) {
-    // std::vector<std::string> location_data;
+  
+  getline(fp, line);
+  while (getline(fp, line)) {
+  
     std::string name;
 
     std::stringstream readstr(line);
@@ -472,10 +471,10 @@ std::vector<std::string> TrojanMap::ReadLocationsFromCSVFile(std::string locatio
       location_names_from_csv.push_back(name);
       std::cout << name << std::endl;
     }
-    // location_names_from_csv.push_back(location_data);
+   
 
   }
-  return location_names_from_csv;
+
   return location_names_from_csv;
 }
 
