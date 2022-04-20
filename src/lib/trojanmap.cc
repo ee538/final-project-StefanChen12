@@ -456,7 +456,7 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
  */
 std::vector<std::string> TrojanMap::ReadLocationsFromCSVFile(std::string locations_filename){
   std::vector<std::string> location_names_from_csv;
-  std::fstream fp(locations_filename);
+  std::ifstream fp(locations_filename);
   std::string line;
   
   getline(fp, line);
@@ -464,14 +464,9 @@ std::vector<std::string> TrojanMap::ReadLocationsFromCSVFile(std::string locatio
   
     std::string name;
 
-    std::stringstream readstr(line);
-
-    for(int i = 0; i < 1;  i++){
-      getline(readstr,name);
-      location_names_from_csv.push_back(name);
-      std::cout << name << std::endl;
-    }
-   
+    std::istringstream readstr(line);
+    getline(readstr,name);
+    location_names_from_csv.push_back(name);
 
   }
 

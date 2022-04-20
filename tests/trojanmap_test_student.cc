@@ -52,14 +52,16 @@ TEST(TrojanMapStudentTest, Test1) {
   // for(int i = 0; i < result1.size(); i++){
   //   std::cout << result1[i] << std::endl;
   // }]
-  auto s = m.ReadLocationsFromCSVFile("input/topologicalsort_locations");
-  for (auto i : s){
-    std::cout << i << std::endl;
-  }
+
+  std::string file = "/Home/538/final-project-StefanChen12/input/topologicalsort_locations.csv";
+  std::vector<std::string> result = m.ReadLocationsFromCSVFile(file);
+  for(int i = 0; i < result.size(); i++){
+      std::cout << result[i] << std::endl;
+    }
+}
   
 
   
-}
 TEST(TrojanmapTest, cyclDetection){
    TrojanMap m;
   
