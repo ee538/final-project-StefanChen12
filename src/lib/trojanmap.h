@@ -36,13 +36,12 @@ class Node {
 class node{
     public:
     node(){};
-    node(bool v, long d, std::string Id, std::string pre, std::string backward, std::vector<std::string> neig, int s){
+    node(bool v, long d, std::string Id, std::string pre, std::string backward, std::vector<std::string> neig){
         visit = v;
         distance = d;
         id = Id;
         prev = pre;
         back = backward;
-        stop = s;
         for(int i = 0; i < neig.size(); i++){
             neighbors.push_back(neig[i]);
         }
@@ -54,7 +53,7 @@ class node{
     std::string prev; // the previous node in the shortest path.
     std::string back; // the previous node in the shortest path.
     std::vector<std::string> neighbors; // the neighbors of the node.
-    int stop;
+    //int stop;
     // Returns true if distance is smaller than the distance of other node object
     // and false otherwise.
     bool operator<(const node& rhs) const;
@@ -145,7 +144,6 @@ class TrojanMap {
                                             std::vector<std::vector<std::string>> &dependencies);  
 
   void DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, Node> &top_data);
-
 
   // Given a vector of location ids, it should reorder them such that the path
   // that covers all these points has the minimum length.
