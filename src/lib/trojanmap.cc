@@ -272,7 +272,6 @@ double TrojanMap::CalculatePathLength(const std::vector<std::string> &path) {
 std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
     std::string location1_name, std::string location2_name) {
       std::cout << "=========================Dijkstra=======================" << std::endl;
-      // StoreStartTime();
       // define a minimum heap.
       std::priority_queue<node, std::vector<node>, std::greater<node> > heap;
       std::vector<std::string> path;
@@ -354,7 +353,6 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   std::string location1_name, std::string location2_name){
   std::cout << "=========================Bellman Ford=======================" << std::endl;
 
-  StoreStartTime();
 
   std::vector<std::string> path;
   std::string start = GetID(location1_name); // start
@@ -389,7 +387,6 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
     
   }
   std::cout << "the distance is:" << Final_distance << std::endl;
-  PrintAndGetDuration();
 return path;
 }
   
