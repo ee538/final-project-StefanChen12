@@ -41,7 +41,6 @@ TEST(TrojanMapStudentTest, Test1) {
   std::cout << "---------" << std::endl;
 
   // Test CalculateShortestPath_Dijkstra
-
   // Test from Ralphs to Chick-fil-A
   auto path = m.CalculateShortestPath_Dijkstra("Ralphs", "Chick-fil-A");
   std::vector<std::string> gt{
@@ -79,7 +78,6 @@ TEST(TrojanMapStudentTest, Test1) {
   // for(int i = 0; i < result1.size(); i++){
   //   std::cout << result1[i] << std::endl;
   // }]
-
 
 }
   
