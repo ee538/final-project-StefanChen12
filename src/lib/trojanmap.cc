@@ -329,8 +329,8 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
       path.push_back(root_ID);
       reverse(path.begin(), path.end());
 
-      double distance = Data[end_ID].distance;
-      std::cout << "the distance is:" << distance << std::endl;
+      // double distance = Data[end_ID].distance;
+      // std::cout << "the distance is:" << distance << std::endl;
       // PrintAndGetDuration();
   return path;
 }
@@ -347,7 +347,6 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
 std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   std::string location1_name, std::string location2_name){
   std::cout << "=========================Bellman Ford=======================" << std::endl;
-
 
   std::vector<std::string> path;
   std::string start = GetID(location1_name); // start

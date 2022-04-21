@@ -132,3 +132,10 @@ TEST(Trojanmaptest, Cycledetection) {
   
 // // }
 
+TEST(Trojanmaptest, Dijkstra){
+  TrojanMap m;
+  auto path = m.CalculateShortestPath_Dijkstra("Ralphs", "Target");
+  for(int i = 0; i < path.size(); i++){
+    std::cout << path[i] << std::endl;
+  }
+}
