@@ -36,7 +36,8 @@ TEST(TrojanMapStudentTest, Test1) {
   // // Test CalculateEditDistance.
   // std::string str2 = m.FindClosestName("Rolph");
   // std::cout << str2 << std::endl;
-
+  EXPECT_EQ(m.CalculateEditDistance("horse", "ros"), 3);
+  EXPECT_EQ(m.CalculateEditDistance("intention", "execution"), 5);
   std::cout << "---------" << std::endl;
 
   // Test CalculateShortestPath_Dijkstra
@@ -53,31 +54,26 @@ TEST(TrojanMapStudentTest, Test1) {
   //   std::cout << result1[i] << std::endl;
   // }]
 
-  std::string file = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_locations.csv";
-  std::vector<std::string> result = m.ReadLocationsFromCSVFile(file);
-  for(int i = 0; i < result.size(); i++){
-      std::cout << result[i] << std::endl;
-    }
-
 }
   
 
   
-TEST(TrojanmapTest, cyclDetection) {
-   TrojanMap m;
+// TEST(TrojanmapTest, cyclDetection) {
+//    TrojanMap m;
   
-  // Test case 1
-  std::vector<double> square1 = {-118.299, -118.264, 34.032, 34.011};
-  auto sub1 = m.GetSubgraph(square1);
-  bool result1 = m.CycleDetection(sub1, square1);
-  EXPECT_EQ(result1, true);
+//   // Test case 1
+//   std::vector<double> square1 = {-118.299, -118.264, 34.032, 34.011};
+//   auto sub1 = m.GetSubgraph(square1);
+//   bool result1 = m.CycleDetection(sub1, square1);
+//   EXPECT_EQ(result1, true);
 
-  // Test case 2
-  std::vector<double> square2 = {-118.290, -118.289, 34.030, 34.020};
-  auto sub2 = m.GetSubgraph(square2);
-  bool result2 = m.CycleDetection(sub2, square2);
-  EXPECT_EQ(result2, false);
-}
+//   // Test case 2
+//   std::vector<double> square2 = {-118.290, -118.289, 34.030, 34.020};
+//   auto sub2 = m.GetSubgraph(square2);
+//   bool result2 = m.CycleDetection(sub2, square2);
+//   EXPECT_EQ(result2, false);
+// }
+
 
 
 TEST(Trojanmaptest, Cycledetection) {
@@ -106,10 +102,10 @@ TEST(Trojanmaptest, Cycledetection) {
   std::vector<std::string> gt ={"Ralphs","Chick-fil-A", "KFC"};
   EXPECT_EQ(topo_result, gt);
 
-}
-
-
-// TEST(TrajanMapJudyTest, Test2) {
-  
 // }
+
+
+// // TEST(TrajanMapJudyTest, Test2) {
+  
+// // }
 
