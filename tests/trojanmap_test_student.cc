@@ -75,31 +75,32 @@ TEST(TrojanMapStudentTest, Test1) {
 // }
 
 
-// TEST(Trojanmaptest, Cycledetection) {
-//     TrojanMap m;
-//     std::string file = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_dependencies.csv";
-//     std::vector<std::vector<std::string>> result = m.ReadDependenciesFromCSVFile(file);
-//     for(int i = 0; i < result.size(); i++){
-//       for(int j = 0; j < result[i].size(); j++){
-//         std::cout << result[i][j] << std::endl;
-//       }
-//     }
+
+TEST(Trojanmaptest, Cycledetection) {
+    TrojanMap m;
+    std::string file = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_dependencies.csv";
+    std::vector<std::vector<std::string>> dependencies = m.ReadDependenciesFromCSVFile(file);
+    for(int i = 0; i < dependencies.size(); i++){
+      for(int j = 0; j < dependencies[i].size(); j++){
+        std::cout << dependencies[i][j] << std::endl;
+      }
+    }
 
 
-//   std::cout << "-----------------" << std::endl;
-//     std::string loc = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_locations.csv";
-//     std::vector<std::string> res = m.ReadLocationsFromCSVFile(loc);
-//     for(int i = 0; i < res.size(); i++){
-//       std::cout << res[i] << std::endl;
-//     }
+  std::cout << "-----------------" << std::endl;
+    std::string loc = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_locations.csv";
+    std::vector<std::string> locations = m.ReadLocationsFromCSVFile(loc);
+    for(int i = 0; i < locations.size(); i++){
+      std::cout << locations[i] << std::endl;
+    }
 
 
-//   // testing DeliveringTrojan
-//   std::vector<std::string> location_names = {"Ralphs", "Chick-fil-A", "KFC"};
-//   std::vector<std::vector<std::string>> dependencies = {{"Ralphs","KFC"}, {"Ralphs","Chick-fil-A"}, {"KFC","Chick-fil-A"}};
-//   std::vector<std::string> topo_result = m.DeliveringTrojan(location_names, dependencies);
-//   std::vector<std::string> gt ={"Ralphs", "KFC","Chick-fil-A"};
-//   EXPECT_EQ(topo_result, gt);
+  // testing DeliveringTrojan
+  // std::vector<std::string> location_names = {"Ralphs", "Chick-fil-A", "KFC"};
+  // std::vector<std::vector<std::string>> dependencies = {{"Ralphs","KFC"}, {"Ralphs","Chick-fil-A"}, {"KFC","Chick-fil-A"}};
+  std::vector<std::string> topo_result = m.DeliveringTrojan(locations, dependencies);
+  std::vector<std::string> gt ={"Ralphs","Chick-fil-A", "KFC"};
+  EXPECT_EQ(topo_result, gt);
 
 // }
 
