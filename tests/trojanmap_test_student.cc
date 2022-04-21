@@ -68,13 +68,10 @@ TEST(TrojanMapStudentTest, Test1) {
   std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
   std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
   EXPECT_EQ(path, gt);
+
+
   // std::string start = "CAVA";
   // std::string end = "Target";
-  // std::vector<std::string> result = m.CalculateShortestPath_Dijkstra(start, end);
-  // for(int i = 0; i < result.size(); i++){
-  //   std::cout << result[i] << std::endl;
-  // }
-
 
   // // Test CalculateShortestPath_Bellman_Ford
   // std::vector<std::string> result1 = m.CalculateShortestPath_Bellman_Ford(start, end);
@@ -124,8 +121,6 @@ TEST(Trojanmaptest, Cycledetection) {
 
 
   // testing DeliveringTrojan
-  // std::vector<std::string> location_names = {"Ralphs", "Chick-fil-A", "KFC"};
-  // std::vector<std::vector<std::string>> dependencies = {{"Ralphs","KFC"}, {"Ralphs","Chick-fil-A"}, {"KFC","Chick-fil-A"}};
   std::vector<std::string> topo_result = m.DeliveringTrojan(locations, dependencies);
   std::vector<std::string> gt ={"Ralphs","Chick-fil-A", "KFC"};
   EXPECT_EQ(topo_result, gt);
