@@ -117,12 +117,7 @@ int TrojanMap::CalculateEditDistance(std::string a, std::string b){
   //first we have to get the Node object of these two names
   // then we get lat and lon of two nodes 
   // then we calculate the distance 
-  std::pair<double, double> result1 = GetPosition(a);
-  std::pair<double, double> result2 = GetPosition(b);
-  int distance = 0;
-  distance = pow(result1.first - result2.first, 2) + pow(result1.second - result2.second, 2);
-  distance = pow(distance, 0.5);
-  return distance;
+  return editDist(a, b, a.length(), b.length());
 }
 
 int TrojanMap::Min(int x, int y, int z){
