@@ -102,6 +102,7 @@ TEST(TrojanmapTest, cyclDetection) {
 
 
 TEST(Trojanmaptest, Cycledetection) {
+  // topological sort
     TrojanMap m;
     std::string file = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_dependencies.csv";
     std::vector<std::vector<std::string>> dependencies = m.ReadDependenciesFromCSVFile(file);
@@ -124,7 +125,6 @@ TEST(Trojanmaptest, Cycledetection) {
   std::vector<std::string> topo_result = m.DeliveringTrojan(locations, dependencies);
   std::vector<std::string> gt ={"Ralphs","Chick-fil-A", "KFC"};
   EXPECT_EQ(topo_result, gt);
-
 }
 
 
