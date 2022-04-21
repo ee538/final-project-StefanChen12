@@ -117,3 +117,78 @@ Time spend
 
 
 # Report 2:
+
+## 1
+Implementation of  CalculateShortestPath_Dijkstra
+
+Time complexity:
+because we are using heap, so the runtime complexity is O(m + nlogn). m is the total number of edges and n is the total
+number of nodes.
+
+Time spent:
+374 ms
+
+Discussion, conclusion, and lessons learned:
+using a heap can help us find the node to deal with in every turn. And it can largely save us time. in this Algorithm, we create a
+unordered map called Data. And we create a new class called node, through which we can record the previous node in the shortest
+path from begining to current node as well as and the shrotest distance. Now we know how to find the shortest distance from start
+to end and we can save a lot of time using heap.
+
+
+## 2
+Cycledetection:
+in this model we first have two little parts, they are:
+
+1. inSquare
+  this function checks if a certain node locates within the square.
+Runtime complexity: O(n)
+
+2. subgraph
+   this function returns a subgraph(which is actually a list of nodes that lays within the square) using the square provided.
+Runtime complexity:O(n)
+
+then, we used CycleDetection funtcion and its helper function "isCyclic" to decide whether there exists a cycle in the squra 
+provided.
+
+3. CycleDetection function(including main function and its helper )
+  
+Runtime complexity: O(m + n)
+because we have to go through all the nodes and all the edges to find out whether there exists a cycle or not. 
+
+Time spent:
+0 ms
+
+Discussion, conclusion, and lessons learned:
+because now in the graph, all the roads are bi-directional, so everytime when we are at a node, we first mark it as visited,
+then we use DFS going through all its neighbors. when we arrive a node whose neighbor has one neighber being visited, and the 
+visited neighbor is not the current node, then we know there is a cycle in the graph.
+
+
+## 3
+Topological sort:
+first we have two functions reading and parsing csv files, and they are:
+1. ReadDependenciesFromCSVFile
+Runtime complexity:O(n)
+
+2. ReadDependenciesFromCSVFile
+Runtime complexity: O(n)
+
+After using these two function, we can get a string vetcor recording all the locations and a vector of string vector recording all
+the depencencies. Then we run the topological sorting funtion. And the topological function includes two part: main part
+（DeliveringTrojan)and its helper(DFS_helper_with_topo).
+
+3. DeliveringTrojan(and DFS_helper_with_topo):
+Runtime complexity: O(n(n + m))
+
+Time spent:
+0 ms
+
+Discussion, conclusion, and lessons learned:
+Using topological sorting algorithm, because we have several differnt nodes, so starting from a differnt node will give us a 
+differnt sorting vector. For example we have three nodes in the example, so we can have 3 differnt topological sorting. But only
+the one that has length equals to the number of nodes is the result we expect. So here we go through all the topological results
+and choose the one that has the length of number of nodes we have.
+
+
+
+
