@@ -135,6 +135,21 @@ path from begining to current node as well as and the shrotest distance. Now we 
 to end and we can save a lot of time using heap.
 
 
+
+Implementation of  CalculateShortestPath_Bellman
+
+Time complexity:
+because we have to runs through all nodes to find the path, the time complexity would be O(m*n). m is the number of vertices and n in the total edages that the graph could have. If we set a stop sign, we didn't have to run through all nodes to get the result.
+
+Time spent:
+38058ms ms
+
+Discussion, conclusion, and lessons learned:
+without using stop sign running time took too much time of finding each nodes' neighbors to find the started node. With the help of stop sign at diceding if the distance didn't change for a long time, running time reduce a lot.
+
+
+
+
 ## 2
 Cycledetection:
 in this model we first have two little parts, they are:
