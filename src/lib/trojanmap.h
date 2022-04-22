@@ -17,7 +17,7 @@
 #include <climits>
 #include <cmath>
 #include <set>
-//#include <chrono>
+
 
 
 // A Node is the location of one point in the map.
@@ -25,14 +25,6 @@ class Node {
   public:
     Node(){};
     Node(const Node &n){id = n.id; lat = n.lat; lon = n.lon; name = n.name; neighbors = n.neighbors; attributes = n.attributes;};
-    Node(std::string Id, double Lat, double Lon, std::string Name, std::vector<std::string> Neighbors, std::unordered_set<std::string> Attributes){
-      id = Id;
-      lat = Lat;
-      Lon = lon;
-      name = Name;
-      neighbors = Neighbors;
-      attributes = Attributes;
-    }
     std::string id;    // A unique id assign to each point
     double lat;        // Latitude
     double lon;        // Longitude
@@ -45,13 +37,12 @@ class Node {
 class node{
     public:
     node(){};
-    node(bool v, long d, std::string Id, std::string pre, std::string backward, std::vector<std::string> neig, int s){
+    node(bool v, long d, std::string Id, std::string pre, std::string backward, std::vector<std::string> neig){
         visit = v;
         distance = d;
         id = Id;
         prev = pre;
         back = backward;
-        stop = s;
         for(int i = 0; i < neig.size(); i++){
             neighbors.push_back(neig[i]);
         }
@@ -63,7 +54,7 @@ class node{
     std::string prev; // the previous node in the shortest path.
     std::string back; // the previous node in the shortest path.
     std::vector<std::string> neighbors; // the neighbors of the node.
-    int stop;
+    //int stop;
     // Returns true if distance is smaller than the distance of other node object
     // and false otherwise.
     bool operator<(const node& rhs) const;
@@ -151,7 +142,9 @@ class TrojanMap {
   // Given a vector of location names, it should return a sorting of nodes
   // that satisfies the given dependencies.
   std::vector<std::string> DeliveringTrojan(std::vector<std::string> &location_names,
-                                            std::vector<std::vector<std::string>> &dependencies);   
+                                            std::vector<std::vector<std::string>> &dependencies);  
+
+  void DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, Node> &top_data);
 
   // Given a vector of location ids, it should reorder them such that the path
   // that covers all these points has the minimum length.
@@ -189,20 +182,7 @@ class TrojanMap {
 
 };
 
-// A global variable that stores the start time.
-//std::chrono::time_point<std::chrono::system_clock> g_start_time;
-// A function that stores the current time into g_start_time;
-// void StoreStartTime() { g_start_time = std::chrono::system_clock::now(); }
-// A function that returns the difference from the current time to
-// g_start_time in seconds.
-// double PrintAndGetDuration() {
-//   auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(
-//       std::chrono::system_clock::now() - g_start_time);
-//   std::cout << "Operation took: " << diff.count() << " milliseconds"
-//             << std::endl;
 
-//   return diff.count();
-// }
 
 
 #endif
