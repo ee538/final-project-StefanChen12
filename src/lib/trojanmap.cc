@@ -382,7 +382,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
 
       if (Data[start].distance == pre_d)
         stop ++;
-      if (stop == 2){
+      if (stop == 1){
         break;
       }
       

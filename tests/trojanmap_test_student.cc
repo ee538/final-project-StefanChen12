@@ -69,15 +69,22 @@ TEST(TrojanMapStudentTest, Test1) {
   std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
   EXPECT_EQ(path, gt);
 
+////////////////////////////////////////////////////////////////////////////////////////
 
+  // Test CalculateShortestPath_Dijkstra
   std::string start = "Chick-fil-A";
-  std::string end =  "Ralphs";
+  std::string end = "Ralphs";
+  std::vector<std::string> result = m.CalculateShortestPath_Dijkstra(start, end);
+  for(int i = 0; i < result.size(); i++){
+    std::cout << result[i] << std::endl;
+  }
 
-  // // Test CalculateShortestPath_Bellman_Ford
-  // std::vector<std::string> result1 = m.CalculateShortestPath_Bellman_Ford(start, end);
-  // for(int i = 0; i < result1.size(); i++){
-  //   std::cout << result1[i] << std::endl;
-  // }
+  // Test CalculateShortestPath_Bellman_Ford
+  std::vector<std::string> result1 = m.CalculateShortestPath_Bellman_Ford(start, end);
+  for(int i = 0; i < result1.size(); i++){
+    std::cout << result1[i] << std::endl;
+  }
+
 
 }
   
