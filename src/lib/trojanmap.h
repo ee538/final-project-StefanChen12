@@ -52,7 +52,7 @@ class node{
     double distance; // the distance between this node and the start node, the default value is infinity.
     std::string id; // A unique id assign to each point
     std::string prev; // the previous node in the shortest path.
-    std::string back; // the previous node in the shortest path.
+    std::string back; // the next node in the shortest path.
     std::vector<std::string> neighbors; // the neighbors of the node.
     //int stop;
     // Returns true if distance is smaller than the distance of other node object
