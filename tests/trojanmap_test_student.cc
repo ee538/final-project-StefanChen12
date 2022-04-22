@@ -70,14 +70,14 @@ TEST(TrojanMapStudentTest, Test1) {
   EXPECT_EQ(path, gt);
 
 
-  // std::string start = "CAVA";
-  // std::string end = "Target";
+  std::string start = "Chick-fil-A";
+  std::string end =  "Ralphs";
 
   // // Test CalculateShortestPath_Bellman_Ford
   // std::vector<std::string> result1 = m.CalculateShortestPath_Bellman_Ford(start, end);
   // for(int i = 0; i < result1.size(); i++){
   //   std::cout << result1[i] << std::endl;
-  // }]
+  // }
 
 }
   
