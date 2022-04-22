@@ -272,7 +272,7 @@ double TrojanMap::CalculatePathLength(const std::vector<std::string> &path) {
 std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
     std::string location1_name, std::string location2_name) {
       std::cout << "=========================Dijkstra=======================" << std::endl;
-      StoreStartTime();
+      //StoreStartTime();
       // define a minimum heap.
       std::priority_queue<node, std::vector<node>, std::greater<node> > heap;
       std::vector<std::string> path;
@@ -337,7 +337,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
 
       double distance = Data[end_ID].distance;
       std::cout << "the distance is:" << distance << std::endl;
-      PrintAndGetDuration();
+      //PrintAndGetDuration();
   return path;
 }
 
