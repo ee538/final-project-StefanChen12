@@ -19,6 +19,7 @@
 #include <set>
 
 
+
 // A Node is the location of one point in the map.
 class Node {
   public:
@@ -180,6 +181,7 @@ class TrojanMap {
   //----------------------------------------------------- User-defined functions
 
 };
+
 
 
 
