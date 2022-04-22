@@ -354,7 +354,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   std::string location1_name, std::string location2_name){
   std::cout << "=========================Bellman Ford=======================" << std::endl;
 
-  StoreStartTime();
+  //StoreStartTime();
 
   std::vector<std::string> path;
   std::string start = GetID(location1_name); // start
@@ -400,7 +400,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   }
 
   std::cout << "the distance is:" << Final_distance << std::endl;
-  PrintAndGetDuration();
+  //PrintAndGetDuration();
 
 return path;
 }
