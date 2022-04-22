@@ -351,6 +351,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   std::string location1_name, std::string location2_name){
   std::cout << "=========================Bellman Ford=======================" << std::endl;
 
+  //StoreStartTime();
 
   std::vector<std::string> path;
   std::string start = GetID(location1_name); // start
@@ -366,59 +367,69 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   }
 
   double Final_distance;
-  int stop = 0;
   Data[end].distance = 0;
   Data[start].distance = INT_MAX;
+  double pre_d = INT_MAX;
+  int stop = 0;
   // for all nodes in path
-  for (int i = 0; i <= Data.size() - 1 ; i++){ 
+  for (int i = 0; i <= Data.size() - 1; i++){ 
+    pre_d = Data[start].distance;
     Final_distance = CalculateShortestPath_Bellman_Ford_Helper(start, i, end, Data);
+    if (Final_distance != INT_MAX){
+
+      if (Data[start].distance == pre_d)
+        stop ++;
+      if (stop == 2){
+        break;
+      }
       
+      
+    }
+    
   }
 
   Data[end].back = "";
   Data[start].prev = "";
 
-
   while (start != ""){
     path.push_back(start);
     start = Data[start].back;
-    
   }
+
   std::cout << "the distance is:" << Final_distance << std::endl;
+  //PrintAndGetDuration();
 
 return path;
 }
   
 double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i, std::string v, std::unordered_map<std::string, node> &Data){
-    
+    double pre_d = Data[s].distance;
+
     if (i == 0){
       return(v == s) ? 0 :INT_MAX;
     }else{
+      double d = INT_MAX;
+      for (auto u : Data[v].neighbors){
 
-    double d = INT_MAX;
-    std::vector<std::string> pre = Data[v].neighbors;
-  
-
-    for (auto u : pre){
-    
-      double dis = CalculateDistance(u,v);
-      
-      if (Data[u].distance > CalculateDistance(u,v) + Data[v].distance){
+        double dis = CalculateDistance(u,v);
         
-        
-        
-        Data[u].distance = (CalculateDistance(u,v) + Data[v].distance);
-
-      }
-      Data[u].back = v;
-      d =  std::min(d, (CalculateShortestPath_Bellman_Ford_Helper(s, i-1, u, Data)+ dis));
+        if (Data[u].distance > CalculateDistance(u,v) + Data[v].distance){
+          
+          Data[u].distance = (CalculateDistance(u,v) + Data[v].distance);
+        }
+        Data[u].back = v;
+        d =  std::min(d, (CalculateShortestPath_Bellman_Ford_Helper(s, i-1, u, Data)+ dis));
       
     }
 
     return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
+
     }
+
+    
     
 }
+
 
 /**
  * Travelling salesman problem: Given a list of locations, return the shortest
