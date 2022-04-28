@@ -3,7 +3,6 @@
 #include <string>
 #include <iomanip>
 #include <set>
-#include <queue>
 //-----------------------------------------------------
 // TODO: Student should implement the following:
 //-----------------------------------------------------
@@ -105,7 +104,6 @@ std::string TrojanMap::GetID(const std::string& name) {
  */
 std::pair<double, double> TrojanMap::GetPosition(std::string name) {
   std::string pos_id = GetID(name);
-  
   std::unordered_map<std::string, Node>::iterator it;
   for ( it = data.begin(); it != data.end(); it++){
     std::string Node_name = it->second.name;
@@ -118,10 +116,6 @@ std::pair<double, double> TrojanMap::GetPosition(std::string name) {
   
   std::pair<double, double> results(-1, -1);
   return results;
-  
-
-  
-  
 }
 
 /**
@@ -132,12 +126,7 @@ int TrojanMap::CalculateEditDistance(std::string a, std::string b){
   //first we have to get the Node object of these two names
   // then we get lat and lon of two nodes 
   // then we calculate the distance 
-  std::pair<double, double> result1 = GetPosition(a);
-  std::pair<double, double> result2 = GetPosition(b);
-  int distance = 0;
-  distance = pow(result1.first - result2.first, 2) + pow(result1.second - result2.second, 2);
-  distance = pow(distance, 0.5);
-  return distance;
+  return editDist(a, b, a.length(), b.length());
 }
 
 int TrojanMap::Min(int x, int y, int z){
@@ -221,8 +210,12 @@ std::vector<std::string> TrojanMap::Autocomplete(std::string name){
   std::unordered_map<std::string, Node>::iterator it;
   for ( it = data.begin(); it != data.end(); it++){
     std::string Node_name = it->second.name;
+    // transform(Node_name.begin(), Node_name.end(), Node_name.begin(),::tolower);
+    // transform(name.begin(), name.end(), name.begin(), ::tolower);
     if(Node_name.length() < name.length()) continue;
-
+    // if(Node_name.find(name) == 0){
+    //   results.push_back(Node_name);
+    // }
     for(int i = 0; i < name.length(); i++){
       if(tolower(Node_name[i]) == tolower(name[i])){
         if(i == name.length() - 1){
@@ -283,7 +276,6 @@ double TrojanMap::CalculatePathLength(const std::vector<std::string> &path) {
 std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
     std::string location1_name, std::string location2_name) {
       std::cout << "=========================Dijkstra=======================" << std::endl;
-      //StoreStartTime();
       // define a minimum heap.
       std::priority_queue<node, std::vector<node>, std::greater<node> > heap;
       std::vector<std::string> path;
@@ -346,9 +338,9 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
       path.push_back(root_ID);
       reverse(path.begin(), path.end());
 
-      double distance = Data[end_ID].distance;
-      std::cout << "the distance is:" << distance << std::endl;
-      //PrintAndGetDuration();
+      // double distance = Data[end_ID].distance;
+      // std::cout << "the distance is:" << distance << std::endl;
+      // PrintAndGetDuration();
   return path;
 }
 
@@ -380,13 +372,11 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   }
 
   double Final_distance;
+  int stop = 0;
   Data[end].distance = 0;
   Data[start].distance = INT_MAX;
-  double pre_d = INT_MAX;
-  int stop = 0;
   // for all nodes in path
-  for (int i = 0; i <= Data.size() - 1; i++){ 
-    pre_d = Data[start].distance;
+  for (int i = 0; i <= Data.size() - 1 ; i++){ 
     Final_distance = CalculateShortestPath_Bellman_Ford_Helper(start, i, end, Data);
     if (Final_distance != INT_MAX){
 
@@ -396,28 +386,28 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
         break;
       }      
     }    
+
   }
 
   Data[end].back = "";
   Data[start].prev = "";
 
+
   while (start != ""){
     path.push_back(start);
     start = Data[start].back;
+    
   }
-
   std::cout << "the distance is:" << Final_distance << std::endl;
-  //PrintAndGetDuration();
-
 return path;
 }
   
 double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i, std::string v, std::unordered_map<std::string, node> &Data){
-    double pre_d = Data[s].distance;
-
+    
     if (i == 0){
       return(v == s) ? 0 :INT_MAX;
     }else{
+
       double d = INT_MAX;
       for (auto u : Data[v].neighbors){
         double dis = CalculateDistance(u,v);
@@ -430,9 +420,8 @@ double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i
     }
     return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
 
+    return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
     }
-
-    
     
 }
 
@@ -456,9 +445,6 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
     std::vector<std::vector<std::string>> min_path;
     TSP_helper(location_ids[0], location_ids, location_ids[0], cur_cost, cur_path, min_cost, min_path);
   std::pair<double, std::vector<std::vector<std::string>>> records(make_pair(min_cost, min_path));
-  // for(int i = 0; i < records.second.size(); i++){
-  //   records.second[i].push_back(location_ids[0]);
-  // }
   return records;
 }
 
@@ -516,9 +502,6 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
     std::vector<std::vector<std::string>> min_path;
     TSP_helper(location_ids[0], location_ids, location_ids[0], cur_cost, cur_path, min_cost, min_path);
   std::pair<double, std::vector<std::vector<std::string>>> records(make_pair(min_cost, min_path));
-  // for(int i = 0; i < records.second.size(); i++){
-  //   records.second[i].push_back(location_ids[0]);
-  // }
   return records;
 }
 
@@ -556,7 +539,6 @@ void TrojanMap::TSP_helper_early_backtracking(std::string start, std::vector<std
     cur_path.pop_back();
   }
 }
-
 
 
 
@@ -629,9 +611,43 @@ std::vector<std::vector<std::string>> TrojanMap::ReadDependenciesFromCSVFile(std
  */
 std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &locations,
                                                      std::vector<std::vector<std::string>> &dependencies){
+  
   std::vector<std::string> result;
+  std::unordered_map<std::string, Node> top_data;
+  for (auto i : locations){
+    for (auto j : dependencies){
+      if (i == j[0]){
+        top_data[i].name = i;
+        top_data[i].neighbors.push_back(j[1]);
+      }
+    }
+  }
 
+  for (auto i : locations){
+    std::set <std::string> marks;
+    std::vector<std::string> topo_list;
+    DFS_helper_with_topo(i, marks, topo_list, top_data);
+    if (topo_list.size() == locations.size()){
+      for(int j = 0; j < topo_list.size(); j++){
+        result.push_back(topo_list[j]);
+      }
+      break;
+    }
+  }
+  reverse(result.begin(), result.end());
   return result;                                                     
+}
+
+
+void TrojanMap::DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, Node> &top_data){
+  marks.insert(root);
+  for(auto neigh : top_data[root].neighbors){
+    if(!marks.count(neigh)){
+      DFS_helper_with_topo(neigh, marks, topo_list, top_data);
+    }
+  }
+  topo_list.push_back(root);
+
 }
 
 
@@ -723,46 +739,8 @@ bool TrojanMap::isCyclic(std::string node, std::set<std::string> &visited, std::
  * @return {std::vector<std::string>}: location name that meets the requirements
  */
 std::vector<std::string> TrojanMap::FindNearby(std::string attributesName, std::string name, double r, int k) {
-std::vector<std::string> res;
-  std::string target_id= GetID(name);
-
-  struct attributes{
-    std::string id;
-    double dis;
-    bool operator<(const attributes &rhs) const{
-      return dis < rhs.dis;
-    }
-  };
-  std::priority_queue<attributes> res_temp;
-
-  for (const auto &it : data){
-    if (it.second.id != target_id){
-      if (it.second.attributes.count(attributesName) > 0){  //count - if there's same string occarance
-        double dis = CalculateDistance(it.second.id, target_id);
-
-        if (dis <= r && (res_temp.size() < k || dis < res_temp.top().dis)){
-          if (res_temp.size() >= k){
-            res_temp.pop();
-
-          }
-
-          res_temp.push({it.second.id, dis});
-        }
-      }
-    }
-  }
-
-  while (res_temp.size() != 0)
-  {
-    auto top = res_temp.top();
-    res_temp.pop();
-    auto n = GetName(top.id);
-    res.push_back(n);
-  }
-
-  std::reverse(res.begin(), res.end());
+  std::vector<std::string> res;
   return res;
-
 }
 
 /**
