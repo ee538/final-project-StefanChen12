@@ -424,32 +424,21 @@ double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i
  */
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTrojan_Brute_force(
                                     std::vector<std::string> location_ids) {
-  // record final min cost
-  int final_min_cost = INT_MAX;
-  // record the final min path
-  std::vector<std::string> final_min_path;
 
-  for(int i = 0; i < location_ids.size(); i++){
     //for each location, we calculate 
-    std::vector<std::string> cur_path = {location_ids[i]};
+    std::vector<std::string> cur_path = {location_ids[0]};
     // record each min cost
     int min_cost = INT_MAX;
     // record min path for circle starting from each node
-    std::vector<std::string> min_path;
-    TSP_helper(location_ids[i], location_ids, location_ids[i], 0, cur_path, min_cost, min_path);
-    if(min_cost < final_min_cost){
-      final_min_cost = min_cost;
-      for(int i = 0; i < min_path.size(); i++){
-        final_min_path.push_back(min_path[i]);
-      }
-    }
-  }
-  std::pair<double, std::vector<std::vector<std::string>>> records(final_min_cost, final_min_path);
+    std::vector<std::vector<std::string>> min_path;
+    TSP_helper(location_ids[0], location_ids, location_ids[0], 0, cur_path, min_cost, min_path);
+  std::pair<double, std::vector<std::vector<std::string>>> records(make_pair(min_cost, min_path));
   return records;
 }
 
-void TSP_helper(std::string start, std::vector<std::string> &locations, std::string cur_node, int cur_cost,
-                                   std::vector<std::string> &cur_path, int &min_cost, std::vector<std::string> &min_path){
+
+void TrojanMap::TSP_helper(std::string start, std::vector<std::string> &locations, std::string cur_node, int cur_cost,
+                                   std::vector<std::string> &cur_path, int &min_cost, std::vector<std::vector<std::string>> &min_path){
   // if we are at a leaf, update min_cost and min_path;
   if(cur_path.size() == locations.size()){
     std::string cur_ID = GetID(cur_node);
@@ -458,7 +447,12 @@ void TSP_helper(std::string start, std::vector<std::string> &locations, std::str
     if(final_cost < min_cost){
       min_cost = final_cost;
       // might have problems.
-      min_path = cur_path;
+      while(min_path.size() != 0){
+        min_path.pop_back();
+      }
+      min_path.push_back(cur_path);
+    }else if(final_cost == min_cost){
+      min_path.push_back(cur_path);
     }
     return;
   }
@@ -484,32 +478,19 @@ void TSP_helper(std::string start, std::vector<std::string> &locations, std::str
 
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTrojan_Backtracking(
                                     std::vector<std::string> location_ids) {
-// record final min cost
-  int final_min_cost = INT_MAX;
-  // record the final min path
-  std::vector<std::string> final_min_path;
-
-  for(int i = 0; i < location_ids.size(); i++){
     //for each location, we calculate 
-    std:vector<std::string> cur_path = {location_ids[i]};
+    std::vector<std::string> cur_path = {location_ids[0]};
     // record each min cost
     int min_cost = INT_MAX;
     // record min path for circle starting from each node
-    std::vector<std::string> min_path;
-    TSP_helper(location_ids[i], location_ids, location_ids[i], 0, cur_path, min_cost, min_path);
-    if(min_cost < final_min_cost){
-      final_min_cost = min_cost;
-      for(int i = 0; i < min_path.size(); i++){
-        final_min_path.push_back(min_path[i]);
-      }
-    }
-  }
-  std::pair<double, std::vector<std::vector<std::string>>> records(final_min_cost, final_min_path);
+    std::vector<std::vector<std::string>> min_path;
+    TSP_helper(location_ids[0], location_ids, location_ids[0], 0, cur_path, min_cost, min_path);
+  std::pair<double, std::vector<std::vector<std::string>>> records(make_pair(min_cost, min_path));
   return records;
 }
 
-void TSP_helper_early_backtracking(std::string start, std::vector<std::string> &locations, std::string cur_node, int cur_cost,
-                                   std::vector<std::string> &cur_path, int &min_cost, std::vector<std::string> &min_path){
+void TrojanMap::TSP_helper_early_backtracking(std::string start, std::vector<std::string> &locations, std::string cur_node, int cur_cost,
+                                   std::vector<std::string> &cur_path, int &min_cost, std::vector<std::vector<std::string>> &min_path){
   // if we are at a leaf, update min_cost and min_path;
   if(cur_path.size() == locations.size()){
     std::string cur_ID = GetID(cur_node);
@@ -518,7 +499,12 @@ void TSP_helper_early_backtracking(std::string start, std::vector<std::string> &
     if(final_cost < min_cost){
       min_cost = final_cost;
       // might have problems.
-      min_path = cur_path;
+      while(min_path.size() != 0){
+        min_path.pop_back();
+      }
+      min_path.push_back(cur_path);
+    }else if(final_cost == min_cost){
+      min_path.push_back(cur_path);
     }
     return;
   }
