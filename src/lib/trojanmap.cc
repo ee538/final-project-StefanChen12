@@ -106,8 +106,22 @@ std::string TrojanMap::GetID(const std::string& name) {
 std::pair<double, double> TrojanMap::GetPosition(std::string name) {
   std::string pos_id = GetID(name);
   
-  std::pair<double, double> results(data[pos_id].lat, data[pos_id].lon);
+  std::unordered_map<std::string, Node>::iterator it;
+  for ( it = data.begin(); it != data.end(); it++){
+    std::string Node_name = it->second.name;
+
+    if(it->second.name ==  name){
+      std::pair<double, double> results(data[pos_id].lat, data[pos_id].lon);
+      return results;
+    }  
+  }
+  
+  std::pair<double, double> results(-1, -1);
   return results;
+  
+
+  
+  
 }
 
 /**
@@ -207,12 +221,8 @@ std::vector<std::string> TrojanMap::Autocomplete(std::string name){
   std::unordered_map<std::string, Node>::iterator it;
   for ( it = data.begin(); it != data.end(); it++){
     std::string Node_name = it->second.name;
-    // transform(Node_name.begin(), Node_name.end(), Node_name.begin(),::tolower);
-    // transform(name.begin(), name.end(), name.begin(), ::tolower);
     if(Node_name.length() < name.length()) continue;
-    // if(Node_name.find(name) == 0){
-    //   results.push_back(Node_name);
-    // }
+
     for(int i = 0; i < name.length(); i++){
       if(tolower(Node_name[i]) == tolower(name[i])){
         if(i == name.length() - 1){
