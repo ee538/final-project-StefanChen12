@@ -69,18 +69,29 @@ TEST(TrojanMapStudentTest, Test1) {
   std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
   EXPECT_EQ(path, gt);
 
-
-  // std::string start = "CAVA";
-  // std::string end = "Target";
-
-  // // Test CalculateShortestPath_Bellman_Ford
-  // std::vector<std::string> result1 = m.CalculateShortestPath_Bellman_Ford(start, end);
-  // for(int i = 0; i < result1.size(); i++){
-  //   std::cout << result1[i] << std::endl;
-  // }]
-
 }
   
+// Test FindPosition function
+TEST(TrojanMapTest, FindPosition) {
+  TrojanMap m;
+  
+  // Test Chick-fil-A
+  auto position = m.GetPosition("Chick-fil-A");
+  std::pair<double, double> gt1(34.0167334, -118.2825307); // groundtruth for "Chick-fil-A"
+  EXPECT_EQ(position, gt1);
+  // Test Ralphs
+  position = m.GetPosition("Ralphs");
+  std::pair<double, double> gt2(34.0317653, -118.2908339); // groundtruth for "Ralphs"
+  EXPECT_EQ(position, gt2);
+  // Test Target
+  position = m.GetPosition("Target");
+  std::pair<double, double> gt3(34.0257016, -118.2843512); // groundtruth for "Target"
+  EXPECT_EQ(position, gt3);
+  // Test Unknown
+  position = m.GetPosition("XXX");
+  std::pair<double, double> gt4(-1, -1);
+  EXPECT_EQ(position, gt4);
+}
 
   
 TEST(TrojanmapTest, cyclDetection) {
@@ -126,11 +137,6 @@ TEST(Trojanmaptest, Cycledetection) {
   std::vector<std::string> gt ={"Ralphs","Chick-fil-A", "KFC"};
   EXPECT_EQ(topo_result, gt);
 }
-
-
-// // TEST(TrajanMapJudyTest, Test2) {
-  
-// // }
 
 TEST(Trojanmaptest, Dijkstra){
   TrojanMap m;

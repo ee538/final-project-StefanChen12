@@ -104,8 +104,17 @@ std::string TrojanMap::GetID(const std::string& name) {
  */
 std::pair<double, double> TrojanMap::GetPosition(std::string name) {
   std::string pos_id = GetID(name);
+  std::unordered_map<std::string, Node>::iterator it;
+  for ( it = data.begin(); it != data.end(); it++){
+    std::string Node_name = it->second.name;
+
+    if(it->second.name ==  name){
+      std::pair<double, double> results(data[pos_id].lat, data[pos_id].lon);
+      return results;
+    }  
+  }
   
-  std::pair<double, double> results(data[pos_id].lat, data[pos_id].lon);
+  std::pair<double, double> results(-1, -1);
   return results;
 }
 
