@@ -70,12 +70,12 @@ TEST(TrojanMapStudentTest, Test1) {
   EXPECT_EQ(path, gt);
 
 ////////////////////////////////////////////////////////////////////////////////////////
-  path = m.CalculateShortestPath_Bellman_Ford( "Chick-fil-A", "Ralphs");
+  // path = m.CalculateShortestPath_Bellman_Ford( "Chick-fil-A", "Ralphs");
 
-  // Print the path lengths
-  std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
-  std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
-  EXPECT_EQ(path, gt);
+  // // Print the path lengths
+  // std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
+  // std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
+  // EXPECT_EQ(path, gt);
 }
   
 
@@ -135,4 +135,14 @@ TEST(Trojanmaptest, Dijkstra){
   for(int i = 0; i < path.size(); i++){
     std::cout << path[i] << std::endl;
   }
+}
+
+TEST(TrojanMapTest, FindNearby)
+{
+  TrojanMap m;
+
+  auto result = m.FindNearby("supermarket", "Ralphs", 10, 10);
+  std::vector<std::string> ans{"Trader Joes", "Cal Mart Beer & Wine Food Store", "Food 4 Less"};
+  EXPECT_EQ(result, ans);
+
 }
