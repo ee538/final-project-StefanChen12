@@ -4,7 +4,6 @@
 #include <string>
 
 
-
 TEST(TrojanMapStudentTest, Test1) {
   // EXPECT_EQ(true, true);
   // Test Autocomplete
@@ -65,12 +64,10 @@ TEST(TrojanMapStudentTest, Test1) {
   path = m.CalculateShortestPath_Dijkstra("Chick-fil-A", "Ralphs");
   std::reverse(gt.begin(),gt.end()); // Reverse the path
 
-
   // Print the path lengths
   std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
   std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
   EXPECT_EQ(path, gt);
-
 
 }
   
