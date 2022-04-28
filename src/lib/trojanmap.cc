@@ -364,7 +364,6 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
 std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   std::string location1_name, std::string location2_name){
   std::cout << "=========================Bellman Ford=======================" << std::endl;
-
   //StoreStartTime();
 
   std::vector<std::string> path;
@@ -393,13 +392,10 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
 
       if (Data[start].distance == pre_d)
         stop ++;
-      if (stop == 1){
+      if (stop == 3){
         break;
-      }
-      
-      
-    }
-    
+      }      
+    }    
   }
 
   Data[end].back = "";
@@ -428,23 +424,13 @@ double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i
         double dis = CalculateDistance(u,v);
         
         if (Data[u].distance > CalculateDistance(u,v) + Data[v].distance){
-          
           Data[u].distance = (CalculateDistance(u,v) + Data[v].distance);
         }
+        std::cout << Data[u].distance << std::endl;
         Data[u].back = v;
         d =  std::min(d, (CalculateShortestPath_Bellman_Ford_Helper(s, i-1, u, Data)+ dis));
       
     }
-    // if (Data[s].distance != INT_MAX){
-    //   if (Data[s].distance == pre_d){
-    //     Data[s].stop = Data[s].stop+1;
-    //   }
-
-    //   if (Data[s].stop == 3){
-    //     Data[s].stop = 0;
-    //   return Data[s].distance;
-    //   }
-    // }
     return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
 
     }
