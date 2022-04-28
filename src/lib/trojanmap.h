@@ -158,11 +158,11 @@ class TrojanMap {
   void TSP_helper(std::string start, std::vector<std::string> &locations, std::string cur_node, double cur_cost,
                                    std::vector<std::string> &cur_path, double &min_cost, std::vector<std::vector<std::string>> &min_path);
   
-  std::pair<double, std::vector<std::vector<std::string>>> TravellingTrojan_Backtracking(
-      std::vector<std::string> location_ids);
+//   std::pair<double, std::vector<std::vector<std::string>>> TravellingTrojan_Backtracking(
+//       std::vector<std::string> location_ids);
   
-  void TSP_helper_early_backtracking(std::string start, std::vector<std::string> &locations, std::string cur_node, double &cur_cost,
-                                   std::vector<std::string> &cur_path, double &min_cost, std::vector<std::vector<std::string>> &min_path);
+//   void TSP_helper_early_backtracking(std::string start, std::vector<std::string> &locations, std::string cur_node, double &cur_cost,
+//                                    std::vector<std::string> &cur_path, double &min_cost, std::vector<std::vector<std::string>> &min_path);
   
   std::pair<double, std::vector<std::vector<std::string>>> TravellingTrojan_2opt(
       std::vector<std::string> location_ids);

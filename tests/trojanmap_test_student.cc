@@ -148,6 +148,13 @@ TEST(TrojanMapTest, TSP1) {
   std::cout << "My path length: "  << result.first << "miles" << std::endl; // Print the result path lengths
   std::vector<std::string> gt{"6819019976","1873055993","8566227656","122702233","8566227783","6816180153","7771782316","6820935923","6819019976"}; // Expected order
   std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; // Print the gt path lengths
+  std::cout << "end" << std::endl;
+  for(int i = 0; i < result.second.size(); i++){
+    for(int j = 0; j < result.second[i].size(); j++){
+      std::cout << result.second[i][j] << std::endl;
+    }
+  }
+  std::cout << result.second.size() << std::endl;
   bool flag = false;
   if (gt == result.second[result.second.size()-1]) // clockwise
     flag = true;
@@ -156,4 +163,8 @@ TEST(TrojanMapTest, TSP1) {
     flag = true;
   
   EXPECT_EQ(flag, true);
+  std::vector<std::string> input2{"6819019976","1873055993","8566227656","122702233","8566227783","6816180153","7771782316","6820935923","6819019976"};
+  std::cout << m.CalculatePathLength(input2) << std::endl;
+  std::cout << m.CalculateDistance("6820935923","6819019976") << std::endl;
+
 }
