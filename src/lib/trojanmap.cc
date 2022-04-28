@@ -420,16 +420,13 @@ double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i
     }else{
       double d = INT_MAX;
       for (auto u : Data[v].neighbors){
-
         double dis = CalculateDistance(u,v);
         
         if (Data[u].distance > CalculateDistance(u,v) + Data[v].distance){
           Data[u].distance = (CalculateDistance(u,v) + Data[v].distance);
         }
-        std::cout << Data[u].distance << std::endl;
         Data[u].back = v;
         d =  std::min(d, (CalculateShortestPath_Bellman_Ford_Helper(s, i-1, u, Data)+ dis));
-      
     }
     return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
 
