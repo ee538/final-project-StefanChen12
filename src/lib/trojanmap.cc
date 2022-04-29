@@ -473,15 +473,13 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
     TSP_helper(location_ids[0], location_ids, location_ids[0], cur_cost, cur_path, min_cost, record);
     result.first = min_cost;
     std::map<double, std::vector<std::string>>::iterator it;
-    // for(it = record.begin(); it != record.end(); it++){
-    //   if(it == record.begin()){
-    //     min_path = it->second;
-    //     continue;
-    //   }
-    //   result.second.push_back(it->second);
-    // }
-    it = record.begin();
-    result.second.push_back(it->second);
+    for(it = record.begin(); it != record.end(); it++){
+      if(it == record.begin()){
+        min_path = it->second;
+        continue;
+      }
+      result.second.push_back(it->second);
+    }
     result.second.push_back(min_path);
   return result;
 }
@@ -534,15 +532,13 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
     TSP_helper(location_ids[0], location_ids, location_ids[0], cur_cost, cur_path, min_cost, record);
     result.first = min_cost;
     std::map<double, std::vector<std::string>>::iterator it;
-    // for(it = record.begin(); it != record.end(); it++){
-    //   if(it == record.begin()){
-    //     min_path = it->second;
-    //     continue;
-    //   }
-    //   result.second.push_back(it->second);
-    // }
-    it = record.begin();
-    result.second.push_back(it->second);
+    for(it = record.begin(); it != record.end(); it++){
+      if(it == record.begin()){
+        min_path = it->second;
+        continue;
+      }
+      result.second.push_back(it->second);
+    }
     result.second.push_back(min_path);
   return result;
 }
