@@ -738,8 +738,45 @@ bool TrojanMap::isCyclic(std::string node, std::set<std::string> &visited, std::
  * @return {std::vector<std::string>}: location name that meets the requirements
  */
 std::vector<std::string> TrojanMap::FindNearby(std::string attributesName, std::string name, double r, int k) {
-  std::vector<std::string> res;
+std::vector<std::string> res;
+  std::string target_id= GetID(name);
+
+  struct attributes{
+    std::string id;
+    double dis;
+    bool operator<(const attributes &rhs) const{
+      return dis < rhs.dis;
+    }
+  };
+  std::priority_queue<attributes> res_temp;
+
+  for (const auto &it : data){
+    if (it.second.id != target_id){
+      if (it.second.attributes.count(attributesName) > 0){  //count - if there's same string occarance
+        double dis = CalculateDistance(it.second.id, target_id);
+
+        if (dis <= r && (res_temp.size() < k || dis < res_temp.top().dis)){
+          if (res_temp.size() >= k){
+            res_temp.pop();
+
+          }
+
+          res_temp.push({it.second.id, dis});
+        }
+      }
+    }
+  }
+
+  while (res_temp.size() != 0)
+  {
+    auto top = res_temp.top();
+    res_temp.pop();
+    res.push_back(top.id);
+  }
+
+  std::reverse(res.begin(), res.end());
   return res;
+
 }
 
 /**
