@@ -95,6 +95,9 @@ class TrojanMap {
   // get editDistance of two string.
   int editDist(std::string str1, std::string str2, int m, int n);
 
+  // not using dynamic programing for editdistance 
+  int editdistance_recursion(std::string str1, std::string str2, int m, int n);
+
   // Get the name of a Node given its id.
   std::string GetName(const std::string& id);
 
