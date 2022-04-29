@@ -435,7 +435,7 @@ double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTrojan_Brute_force(
                                     std::vector<std::string> location_ids) {
 
-    std::pair<double, std::vector<std::vector<std::string>>> records;
+    std::pair<double, std::vector<std::vector<std::string>>> result;
     //for each location, we calculate 
     std::vector<std::string> cur_path;
     cur_path.push_back(location_ids[0]);
@@ -446,22 +446,22 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
     std::vector<std::string> min_path;
     std::map<double, std::vector<std::string>> record;
     TSP_helper(location_ids[0], location_ids, location_ids[0], cur_cost, cur_path, min_cost, record);
-    records.first = min_cost;
+    result.first = min_cost;
     std::map<double, std::vector<std::string>>::iterator it;
     for(it = record.begin(); it != record.end(); it++){
       if(it == record.begin()){
         min_path = it->second;
         continue;
       }
-      records.second.push_back(it->second);
+      result.second.push_back(it->second);
     }
-    record.second.push_back(min_path);
-  return records;
+    result.second.push_back(min_path);
+  return result;
 }
 
 
 void TrojanMap::TSP_helper(std::string start, std::vector<std::string> &locations, std::string cur_node, double cur_cost,
-                                   std::vector<std::string> &cur_path, double &min_cost, std::vector<std::vector<std::string>> &record){
+                                   std::vector<std::string> &cur_path, double &min_cost, std::map<double, std::vector<std::string>> &record){
   // if we are at a leaf, update min_cost and min_path;
   if(cur_path.size() == locations.size()){
     double final_cost = cur_cost + CalculateDistance(cur_node, start);
@@ -482,7 +482,7 @@ void TrojanMap::TSP_helper(std::string start, std::vector<std::string> &location
       continue;
     }
     cur_path.push_back(loc);
-    TSP_helper(start, locations,loc, cur_cost + CalculateDistance(loc, cur_node), cur_path, min_cost, min_path);
+    TSP_helper(start, locations, loc, cur_cost + CalculateDistance(loc, cur_node), cur_path, min_cost, record);
     //because we know find a local(or global) optimal, so when we pop, we need to pop start point first;
     cur_path.pop_back();
     cur_path.pop_back();
@@ -494,7 +494,7 @@ void TrojanMap::TSP_helper(std::string start, std::vector<std::string> &location
 
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTrojan_Backtracking(
                                     std::vector<std::string> location_ids) {
-    std::pair<double, std::vector<std::vector<std::string>>> records;
+    std::pair<double, std::vector<std::vector<std::string>>> result;
     //for each location, we calculate 
     std::vector<std::string> cur_path;
     cur_path.push_back(location_ids[0]);
@@ -505,21 +505,21 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
     std::vector<std::string> min_path;
     std::map<double, std::vector<std::string>> record;
     TSP_helper(location_ids[0], location_ids, location_ids[0], cur_cost, cur_path, min_cost, record);
-    records.first = min_cost;
+    result.first = min_cost;
     std::map<double, std::vector<std::string>>::iterator it;
     for(it = record.begin(); it != record.end(); it++){
       if(it == record.begin()){
         min_path = it->second;
         continue;
       }
-      records.second.push_back(it->second);
+      result.second.push_back(it->second);
     }
-    record.second.push_back(min_path);
-  return records;
+    result.second.push_back(min_path);
+  return result;
 }
 
 void TrojanMap::TSP_helper_early_backtracking(std::string start, std::vector<std::string> &locations, std::string cur_node, double &cur_cost,
-                                   std::vector<std::string> &cur_path, double &min_cost, std::vector<std::vector<std::string>> &record){
+                                   std::vector<std::string> &cur_path, double &min_cost, std::map<double, std::vector<std::string>> &record){
   // if we are at a leaf, update min_cost and min_path;
   if(cur_path.size() == locations.size()){
     double final_cost = cur_cost + CalculateDistance(cur_node, start);
@@ -541,7 +541,7 @@ void TrojanMap::TSP_helper_early_backtracking(std::string start, std::vector<std
       continue;
     }
     cur_path.push_back(loc);
-    TSP_helper(start, locations,loc, cur_cost + CalculateDistance(loc, cur_node), cur_path, min_cost, min_path);
+    TSP_helper(start, locations,loc, cur_cost + CalculateDistance(loc, cur_node), cur_path, min_cost, record);
     //because we know find a local(or global) optimal, so when we pop, we need to pop start point first;
     cur_path.pop_back();
     cur_path.pop_back();
