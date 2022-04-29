@@ -153,7 +153,7 @@ TEST(TrojanMapTest, CalculateShortestPath_Bellman_Ford) {
   EXPECT_EQ(path, gt);
 }
 
-Test cycle detection function
+// Test cycle detection function
 TEST(TrojanMapTest, CycleDetection) {
   TrojanMap m;
   

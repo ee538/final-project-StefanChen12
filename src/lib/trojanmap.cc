@@ -541,11 +541,38 @@ void TrojanMap::TSP_helper_early_backtracking(std::string start, std::vector<std
 
 
 
-
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTrojan_2opt(
       std::vector<std::string> location_ids){
-  std::pair<double, std::vector<std::vector<std::string>>> records;
-  return records;
+  std::pair<double, std::vector<std::vector<std::string>>> results;
+  std::vector<std::string> locations = location_ids;
+  locations.push_back(location_ids.front());
+  int length = locations.size();
+  int improve = 0;
+  while(improve<15)
+  {
+    start_again: double min_distance = CalculatePathLength(locations);
+    for(int i=1; i<length-2; i++)
+    {
+      for(int j=i+1; j<length-1; j++)
+      {
+        std::vector<std::string> temp = locations;
+        std::reverse(temp.begin()+i,temp.begin()+j+1);
+        double distance = CalculatePathLength(temp);
+        if(distance < min_distance)
+        {
+          improve = 0;
+          locations.clear();
+          locations = temp;
+          min_distance = distance;
+          results.second.push_back(temp);
+          goto start_again;
+        }
+      }
+    }
+    improve++;
+  }
+  results.first = CalculatePathLength(locations);
+  return results;
 }
 
 /**
