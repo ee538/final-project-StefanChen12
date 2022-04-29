@@ -484,7 +484,7 @@ void TrojanMap::TSP_helper(std::string start, std::vector<std::string> &location
     cur_path.push_back(loc);
     TSP_helper(start, locations, loc, cur_cost + CalculateDistance(loc, cur_node), cur_path, min_cost, record);
     //because we know find a local(or global) optimal, so when we pop, we need to pop start point first;
-    cur_path.pop_back();
+    if(cur_path.size() == locations.size() + 1) cur_path.pop_back();
     cur_path.pop_back();
   }
 }
@@ -543,7 +543,7 @@ void TrojanMap::TSP_helper_early_backtracking(std::string start, std::vector<std
     cur_path.push_back(loc);
     TSP_helper(start, locations,loc, cur_cost + CalculateDistance(loc, cur_node), cur_path, min_cost, record);
     //because we know find a local(or global) optimal, so when we pop, we need to pop start point first;
-    cur_path.pop_back();
+    if(cur_path.size() == locations.size() + 1) cur_path.pop_back();
     cur_path.pop_back();
   }
 }
