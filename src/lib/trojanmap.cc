@@ -521,6 +521,7 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
 void TrojanMap::TSP_helper_early_backtracking(std::string start, std::vector<std::string> &locations, std::string cur_node, double &cur_cost,
                                    std::vector<std::string> &cur_path, double &min_cost, std::map<double, std::vector<std::string>> &record){
   // if we are at a leaf, update min_cost and min_path;
+  if(cur_cost > min_cost) return;
   if(cur_path.size() == locations.size()){
     double final_cost = cur_cost + CalculateDistance(cur_node, start);
     cur_path.push_back(start);
@@ -532,7 +533,6 @@ void TrojanMap::TSP_helper_early_backtracking(std::string start, std::vector<std
     return;
   }
 
-  if(cur_cost > min_cost) return;
   // Else evaluate all children.
   // loc is the name of the location
   for(auto loc : locations){
