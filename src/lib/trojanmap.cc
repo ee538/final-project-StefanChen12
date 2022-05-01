@@ -3,6 +3,7 @@
 #include <string>
 #include <iomanip>
 #include <set>
+#include <map>
 //-----------------------------------------------------
 // TODO: Student should implement the following:
 //-----------------------------------------------------
@@ -168,6 +169,31 @@ int TrojanMap::editDist(std::string str1, std::string str2, int m, int n){
     }
  
     return dp[m][n];
+}
+
+int TrojanMap::editdistance_recursion(std::string str1, std::string str2, int m, int n){
+  // If first string is empty, the only option is to
+    // insert all characters of second string into first
+    if (m == 0) return n;
+
+    // If second string is empty, the only option is to
+    // remove all characters of first string
+    if (n == 0) return m;
+
+    // If last characters of two strings are same, nothing
+    // much to do. Ignore last characters and get count for
+    // remaining strings.
+    if (str1[m-1] == str2[n-1])
+        return editDist(str1, str2, m-1, n-1);
+
+    // If last characters are not same, consider all three
+    // operations on last character of first string, recursively
+    // compute minimum cost for all three operations and take
+    // minimum of three values.
+    return 1 + Min ( editDist(str1,  str2, m, n-1),    // Insert
+                     editDist(str1,  str2, m-1, n),   // Remove
+                     editDist(str1,  str2, m-1, n-1) // Replace
+                   );
 }
 
 /**
@@ -437,6 +463,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTrojan_Brute_force(
                                     std::vector<std::string> location_ids) {
 
+    std::pair<double, std::vector<std::vector<std::string>>> result;
     //for each location, we calculate 
     std::vector<std::string> cur_path;
     cur_path.push_back(location_ids[0]);
@@ -444,31 +471,34 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
     double min_cost = INT_MAX;
     double cur_cost = 0;
     // record min path for circle starting from each node
-    std::vector<std::vector<std::string>> min_path;
-    TSP_helper(location_ids[0], location_ids, location_ids[0], cur_cost, cur_path, min_cost, min_path);
-  std::pair<double, std::vector<std::vector<std::string>>> records(make_pair(min_cost, min_path));
-  return records;
+    std::vector<std::string> min_path;
+    std::map<double, std::vector<std::string>> record;
+    TSP_helper(location_ids[0], location_ids, location_ids[0], cur_cost, cur_path, min_cost, record);
+    result.first = min_cost;
+    std::map<double, std::vector<std::string>>::iterator it;
+    for(it = record.begin(); it != record.end(); it++){
+      if(it == record.begin()){
+        min_path = it->second;
+        continue;
+      }
+      result.second.push_back(it->second);
+    }
+    result.second.push_back(min_path);
+  return result;
 }
 
 
 void TrojanMap::TSP_helper(std::string start, std::vector<std::string> &locations, std::string cur_node, double cur_cost,
-                                   std::vector<std::string> &cur_path, double &min_cost, std::vector<std::vector<std::string>> &min_path){
+                                   std::vector<std::string> &cur_path, double &min_cost, std::map<double, std::vector<std::string>> &record){
   // if we are at a leaf, update min_cost and min_path;
   if(cur_path.size() == locations.size()){
     double final_cost = cur_cost + CalculateDistance(cur_node, start);
+    cur_path.push_back(start);
 
     if(final_cost < min_cost){
       min_cost = final_cost;
-      // might have problems.
-      while(min_path.size() != 0){
-        min_path.pop_back();
-      }
-      cur_path.push_back(start);
-      min_path.push_back(cur_path);
-    }else if(final_cost == min_cost){
-      cur_path.push_back(start);
-      min_path.push_back(cur_path);
     }
+    record[final_cost] = cur_path;
     return;
   }
 
@@ -480,11 +510,9 @@ void TrojanMap::TSP_helper(std::string start, std::vector<std::string> &location
       continue;
     }
     cur_path.push_back(loc);
-    TSP_helper(start, locations,loc, cur_cost + CalculateDistance(loc, cur_node), cur_path, min_cost, min_path);
-    if(cur_path.size() == locations.size() + 1){
-      //because we know find a local(or global) optimal, so when we pop, we need to pop start point first;
-      cur_path.pop_back();
-    }
+    TSP_helper(start, locations, loc, cur_cost + CalculateDistance(loc, cur_node), cur_path, min_cost, record);
+    //because we know find a local(or global) optimal, so when we pop, we need to pop start point first;
+    if(cur_path.size() == locations.size() + 1) cur_path.pop_back();
     cur_path.pop_back();
   }
 }
@@ -494,6 +522,7 @@ void TrojanMap::TSP_helper(std::string start, std::vector<std::string> &location
 
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTrojan_Backtracking(
                                     std::vector<std::string> location_ids) {
+    std::pair<double, std::vector<std::vector<std::string>>> result;
     //for each location, we calculate 
     std::vector<std::string> cur_path;
     cur_path.push_back(location_ids[0]);
@@ -501,33 +530,37 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
     double min_cost = INT_MAX;
     double cur_cost = 0;
     // record min path for circle starting from each node
-    std::vector<std::vector<std::string>> min_path;
-    TSP_helper(location_ids[0], location_ids, location_ids[0], cur_cost, cur_path, min_cost, min_path);
-  std::pair<double, std::vector<std::vector<std::string>>> records(make_pair(min_cost, min_path));
-  return records;
+    std::vector<std::string> min_path;
+    std::map<double, std::vector<std::string>> record;
+    TSP_helper(location_ids[0], location_ids, location_ids[0], cur_cost, cur_path, min_cost, record);
+    result.first = min_cost;
+    std::map<double, std::vector<std::string>>::iterator it;
+    for(it = record.begin(); it != record.end(); it++){
+      if(it == record.begin()){
+        min_path = it->second;
+        continue;
+      }
+      result.second.push_back(it->second);
+    }
+    result.second.push_back(min_path);
+  return result;
 }
 
 void TrojanMap::TSP_helper_early_backtracking(std::string start, std::vector<std::string> &locations, std::string cur_node, double &cur_cost,
-                                   std::vector<std::string> &cur_path, double &min_cost, std::vector<std::vector<std::string>> &min_path){
+                                   std::vector<std::string> &cur_path, double &min_cost, std::map<double, std::vector<std::string>> &record){
   // if we are at a leaf, update min_cost and min_path;
+  if(cur_cost > min_cost) return;
   if(cur_path.size() == locations.size()){
     double final_cost = cur_cost + CalculateDistance(cur_node, start);
+    cur_path.push_back(start);
+
     if(final_cost < min_cost){
       min_cost = final_cost;
-      // might have problems.
-      while(min_path.size() != 0){
-        min_path.pop_back();
-      }
-      cur_path.push_back(start);
-      min_path.push_back(cur_path);
-    }else if(final_cost == min_cost){
-      cur_path.push_back(start);
-      min_path.push_back(cur_path);
     }
+    record[final_cost] = cur_path;
     return;
   }
 
-  if(cur_cost > min_cost) return;
   // Else evaluate all children.
   // loc is the name of the location
   for(auto loc : locations){
@@ -536,7 +569,8 @@ void TrojanMap::TSP_helper_early_backtracking(std::string start, std::vector<std
       continue;
     }
     cur_path.push_back(loc);
-    TSP_helper(start, locations, loc, cur_cost + CalculateDistance(cur_node, loc), cur_path, min_cost, min_path);
+    TSP_helper(start, locations,loc, cur_cost + CalculateDistance(loc, cur_node), cur_path, min_cost, record);
+    //because we know find a local(or global) optimal, so when we pop, we need to pop start point first;
     if(cur_path.size() == locations.size() + 1) cur_path.pop_back();
     cur_path.pop_back();
   }
@@ -630,6 +664,27 @@ std::vector<std::vector<std::string>> TrojanMap::ReadDependenciesFromCSVFile(std
   return dependencies_from_csv;
 }
 
+//decide whethere there is a cycle in topological sort.
+bool TrojanMap::HasCycle(std::unordered_map<std::string, std::vector<std::string>> next, std::string node, std::unordered_map<std::string, bool> &visited){
+  bool cycle = false;
+  HasCycle_helper(next, node, visited, cycle);
+  return (cycle == true);
+}
+
+void TrojanMap::HasCycle_helper(std::unordered_map<std::string, std::vector<std::string>> next, std::string node, std::unordered_map<std::string, bool> &visited, bool &cycle){
+  // if current node has been visited before means there is a cycle.
+  if(visited[node] == true){
+    cycle = true;
+    return;
+  }
+  // mark current node.
+  visited[node] = true;
+  for(auto next_node : next[node]){
+    HasCycle_helper(next, next_node, visited, cycle);
+  }
+  visited[node] = false;
+}
+
 /**
  * DeliveringTrojan: Given a vector of location names, it should return a sorting of nodes
  * that satisfies the given dependencies. If there is no way to do it, return a empty vector.
@@ -640,30 +695,43 @@ std::vector<std::vector<std::string>> TrojanMap::ReadDependenciesFromCSVFile(std
  */
 std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &locations,
                                                      std::vector<std::vector<std::string>> &dependencies){
-  
+
   std::vector<std::string> result;
-  std::unordered_map<std::string, Node> top_data;
- 
-  for (auto i : locations){
-    for (auto j : dependencies){
-      if (i == j[0]){
-        top_data[i].name = i;
-        top_data[i].neighbors.push_back(j[1]);
+
+  // next is a map that record every nodes that is depended on the current node.
+  std::unordered_map<std::string, std::vector<std::string>> next;
+  for(auto cur_node : locations){
+    for(auto dependency : dependencies){
+      if(dependency[0] == cur_node){
+        next[cur_node].push_back(dependency[1]);
       }
     }
   }
-std::vector<std::string> topo_list;
-  for (auto i : locations){
-    std::set <std::string> marks;
-    
-    DFS_helper_with_topo(i, marks, topo_list, top_data);
-    // topo_list.pop();
-    if (topo_list.size() == locations.size()){
-      for(int j = 0; j < topo_list.size(); j++){
-        
 
-      }
+  // select a node that depend on nothing to detect whethere there exists a cycle.
+  // Successor is for recording all nodes that has dependency
+  std::set<std::string> Successor;
+  for(auto dependency : dependencies){
+    Successor.insert(dependency[1]);
+  }
+  std::string origin = "";
+  for(auto location : locations){
+    if(Successor.count(location) != 1){
+      origin = location;
       break;
+    }
+  }
+  std::unordered_map<std::string, bool> visited;
+  if(HasCycle(next, origin, visited) == true){
+    return result;
+  }
+
+  std::vector<std::string> topo_list;
+  std::set<std::string> marks;
+  DFS_helper_with_topo(origin, marks, topo_list, next);
+  if(topo_list.size() == locations.size()){
+    for(int i = 0; i < topo_list.size(); i++){
+      result.push_back(topo_list[i]);
     }
   }
   reverse(result.begin(), result.end());
@@ -671,20 +739,16 @@ std::vector<std::string> topo_list;
 }
 
 
-void TrojanMap::DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, Node> &top_data){
+void TrojanMap::DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, std::vector<std::string>> &next){
   marks.insert(root);
-  std::cout << root << std::endl;
-  for(auto neigh : top_data[root].neighbors){
 
-    if(!marks.count(neigh)){
-      DFS_helper_with_topo(neigh, marks, topo_list, top_data);
+  for(auto child : next[root]){
+    if(marks.count(child) == 0){
+      DFS_helper_with_topo(child, marks, topo_list, next);
     }
   }
   topo_list.push_back(root);
-
 }
-
-
 
 
 /**

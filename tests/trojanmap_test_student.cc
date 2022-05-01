@@ -2,6 +2,7 @@
 #include "src/lib/trojanmap.h"
 #include <algorithm>
 #include <string>
+#include <typeinfo>
 
 TEST(TrojanMapStudentTest, AutoComplete){
   std::cout << "=====AutoComplete=====" <<std::endl;
@@ -21,6 +22,35 @@ TEST(TrojanMapStudentTest, AutoComplete){
   auto res3 = m.Autocomplete("");
   std::vector<std::string> ans3 = {};
   EXPECT_EQ(res3, ans3);
+}
+
+TEST(TrojanMapTest, FindPosition) {
+  TrojanMap m;
+  
+  // Test Chick-fil-A
+  auto position = m.GetPosition("Chick-fil-A");
+  std::pair<double, double> gt1(34.0167334, -118.2825307); // groundtruth for "Chick-fil-A"
+  EXPECT_EQ(position, gt1);
+  // Test Ralphs
+  position = m.GetPosition("Ralphs");
+  std::pair<double, double> gt2(34.0317653, -118.2908339); // groundtruth for "Ralphs"
+  EXPECT_EQ(position, gt2);
+  // Test Target
+  position = m.GetPosition("Target");
+  std::pair<double, double> gt3(34.0257016, -118.2843512); // groundtruth for "Target"
+  EXPECT_EQ(position, gt3);
+  // Test Unknown
+  position = m.GetPosition("XXX");
+  std::pair<double, double> gt4(-1, -1);
+  EXPECT_EQ(position, gt4);
+}
+
+TEST(TrojanMapStudentTest, EditDistance) {
+  std::cout << "=====EditDistance=====" <<std::endl;
+  // Test CalculateEditDistance.
+  EXPECT_EQ(m.CalculateEditDistance("horse", "ros"), 3);
+  EXPECT_EQ(m.CalculateEditDistance("intention", "execution"), 5);
+  EXPECT_EQ(m.CalculateEditDistance("abc", "adc"), 1);
 }
 
 TEST(TrojanMapStudentTest, ShortestPath){
@@ -58,26 +88,70 @@ TEST(TrojanMapStudentTest, ShortestPath){
   EXPECT_EQ(resB3, ans3);
   EXPECT_EQ(resD3, ans3);
 
+TEST(TrojanmapTest, CycleDetection) {
+   TrojanMap m;
+  
+  // Test case 1
+  std::vector<double> square1 = {-118.299, -118.264, 34.032, 34.011};
+  auto sub1 = m.GetSubgraph(square1);
+  bool result1 = m.CycleDetection(sub1, square1);
+  EXPECT_EQ(result1, true);
 
+  // Test case 2
+  std::vector<double> square2 = {-118.290, -118.289, 34.030, 34.020};
+  auto sub2 = m.GetSubgraph(square2);
+  bool result2 = m.CycleDetection(sub2, square2);
+  EXPECT_EQ(result2, false);
+
+  // Test case 3
+  std::vector<double> square3 = {-118.294, -118.289, 34.030, 34.020};
+  auto sub3 = m.GetSubgraph(square3);
+  bool result3 = m.CycleDetection(sub3, square3);
+  EXPECT_EQ(result3, true);
 }
 
-TEST(TrojanMapStudentTest, GetPosition){
-  std::cout << "=====GetPosition=====" <<std::endl;
+// Test Topological sorting
+TEST(TrojanMapTest, TopologicalSort){
   TrojanMap m;
-  // Test actull location
-  auto position = m.GetPosition("Chick-fil-A");
-  std::pair<double, double> gt1(34.0167334, -118.2825307); 
-  EXPECT_EQ(position, gt1);
 
-  // Test wrong location
-  position = m.GetPosition("Ra");
-  std::pair<double, double> gt2(-1, -1); 
-  EXPECT_EQ(position, gt2);
+  std::vector<std::string> location_names = {"Ralphs", "Chick-fil-A", "KFC"};
+  std::vector<std::vector<std::string>> dependencies = {{"Ralphs", "KFC"}, {"Ralphs", "Chick-fil-A"}, {"KFC", "Chick-fil-A"}};
+  auto result = m.DeliveringTrojan(location_names, dependencies);
+  std::vector<std::string> gt = {"Ralphs", "KFC", "Chick-fil-A"};
+  EXPECT_EQ(result, gt);
+
+  location_names = {"Ralphs", "Chipotle", "Parking Center"};
+  dependencies = {{"Ralphs", "Chipotle"}, {"Ralphs", "Parking Center"}, {"Chipotle", "Parking Center"}};
+  result = m.DeliveringTrojan(location_names, dependencies);
+  gt = {"Ralphs", "Chipotle", "Parking Center"};
+  EXPECT_EQ(result, gt);
+
+  location_names = {"Ralphs", "Chipotle", "Parking Center", "Jefferson"};
+  dependencies = {{"Ralphs", "Chipotle"}, {"Ralphs", "Parking Center"}, {"Chipotle", "Parking Center"}, {"Parking Center", "Jefferson"}};
+  result = m.DeliveringTrojan(location_names, dependencies);
+  gt = {"Ralphs", "Chipotle", "Parking Center", "Jefferson"};
+  EXPECT_EQ(result, gt);
+}
+
+
+TEST(TrojanMapTest, TSP1) {
+  TrojanMap m;
   
-  // Test no location
-  position = m.GetPosition(" ");
-  std::pair<double, double> gt3(-1, -1);
-  EXPECT_EQ(position, gt3);
+  std::vector<std::string> input{"6819019976","6820935923","122702233","8566227783","8566227656","6816180153","1873055993","7771782316"}; // Input location ids 
+  auto result = m.TravellingTrojan_Brute_force(input);
+  std::cout << "My path length: "  << result.first << "miles" << std::endl; // Print the result path lengths
+  std::vector<std::string> gt{"6819019976","1873055993","8566227656","122702233","8566227783","6816180153","7771782316","6820935923","6819019976"}; // Expected order
+  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; // Print the gt path lengths
+  std::cout << "end" << std::endl;
+  std::cout << result.second.size() << std::endl;
+  bool flag = false;
+  if (gt == result.second[result.second.size()-1]) // clockwise
+    flag = true;
+  std::reverse(gt.begin(),gt.end()); // Reverse the expected order because the counterclockwise result is also correct
+  if (gt == result.second[result.second.size()-1]) 
+    flag = true;
+  
+  EXPECT_EQ(flag, true);
 }
 
 TEST(TrojanMapStudentTest, FindNearby) {
