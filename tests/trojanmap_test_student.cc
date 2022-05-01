@@ -24,7 +24,7 @@ TEST(TrojanMapStudentTest, AutoComplete){
   EXPECT_EQ(res3, ans3);
 }
 
-TEST(TrojanMapTest, FindPosition) {
+TEST(TrojanMapStudentTest, FindPosition) {
   TrojanMap m;
   
   // Test Chick-fil-A
@@ -46,6 +46,7 @@ TEST(TrojanMapTest, FindPosition) {
 }
 
 TEST(TrojanMapStudentTest, EditDistance) {
+  TrojanMap m;
   std::cout << "=====EditDistance=====" <<std::endl;
   // Test CalculateEditDistance.
   EXPECT_EQ(m.CalculateEditDistance("horse", "ros"), 3);
@@ -87,6 +88,7 @@ TEST(TrojanMapStudentTest, ShortestPath){
     "6813360961", "6813379584", "6814769289", "5237417650" };
   EXPECT_EQ(resB3, ans3);
   EXPECT_EQ(resD3, ans3);
+}
 
 TEST(TrojanmapTest, CycleDetection) {
    TrojanMap m;
