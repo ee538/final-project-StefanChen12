@@ -58,8 +58,6 @@ unordered map called Data. And we create a new class called node, through which 
 path from begining to current node as well as and the shrotest distance. Now we know how to find the shortest distance from start
 to end and we can save a lot of time using heap.
 
-
-
 Implementation of  CalculateShortestPath_Bellman
 Time complexity:
 because we have to runs through all nodes to find the path, the time complexity would be O(m*n). m is the number of vertices and n in the total edages that the graph could have. If we set a stop sign, we didn't have to run through all nodes to get the result.
@@ -131,8 +129,6 @@ and choose the one that has the length of number of nodes we have.
 
 
 
-
-
 # Report 3:
 Travelling Trojan
 
@@ -160,3 +156,10 @@ improve much. 2-opt function has largely improved the Runtime complexity. We upd
 keep the path before i and after j the same, reversing the part between i and j. If the updated version has shorter distance, then
 we update the min_path.
 
+## FindNearby point
+ Runtime Complexity: O(n) n = data size
+
+ Time spend: 134ms
+
+ Discussion, conclusion, and lessons learned:
+ FindNearby is similar to AutoComplete. We need to run over all data to find the same attribute then check if the distance is inside setting radius. If the attribute is the same and the location is inside the radius then we got the answer.
