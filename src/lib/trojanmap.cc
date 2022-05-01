@@ -359,18 +359,18 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   // get all edge
   struct edge
   {
-    std::string from;
-    std::string to;
+    std::string begin;
+    std::string finish;
     double distance;
   };
 
   std::vector<edge> all_E;
   for (auto &&node : data){
-    std::string from = node.second.id;
+    std::string begin = node.second.id;
     for (int i = 0; i < node.second.neighbors.size(); i++)
     {
-      std::string to = node.second.neighbors[i];
-      all_E.push_back({from, to, CalculateDistance(from, to)});
+      std::string finish = node.second.neighbors[i];
+      all_E.push_back({begin, finish, CalculateDistance(begin, finish)});
     }
   }
 
@@ -386,8 +386,8 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   std::unordered_map<std::string, Data> path_data;
   for (auto it = data.begin(); it != data.end(); it++)
   {
-    double opt_w = it->second.id == start ? 0 : __INT_MAX__;
-    path_data[it->second.id] = {opt_w, ""};
+    double dis = it->second.id == start ? 0 : INT_MAX;
+    path_data[it->second.id] = {dis, ""};
   }
 
   //Bellma Ford main Function
@@ -398,23 +398,23 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
     pre_dis = path_data[end].distance;
     for (int j = 0; j < all_E.size(); j++)
     {
-      std::string from = all_E[j].from;
-      std::string to = all_E[j].to;
+      std::string begin = all_E[j].begin;
+      std::string finish = all_E[j].finish;
       double dis = all_E[j].distance;
-      if (path_data[from].distance != __INT_MAX__ && path_data[from].distance + dis < path_data[to].distance)
+      if (path_data[begin].distance != INT_MAX && path_data[begin].distance + dis < path_data[finish].distance)
       {
-        path_data[to].distance = path_data[from].distance + dis;
-        path_data[to].prev = from;
-        if (to == end)
+        path_data[finish].distance = path_data[begin].distance + dis;
+        path_data[finish].prev = begin;
+        if (finish == end)
           stop = 0;
       }
     }
     // interrupt
-    if (path_data[end].distance != __INT_MAX__)
+    if (path_data[end].distance != INT_MAX)
     {
       if (path_data[end].distance == pre_dis)
         stop++;
-      if (stop == 3)
+      if (stop == 15)
         break;
     }
   }
