@@ -2,6 +2,7 @@
 #include "src/lib/trojanmap.h"
 #include <algorithm>
 #include <string>
+#include <typeinfo>
 
 
 TEST(TrojanMapStudentTest, Test1) {
@@ -112,7 +113,7 @@ TEST(TrojanmapTest, cyclDetection) {
 
 
 
-TEST(Trojanmaptest, Cycledetection) {
+TEST(Trojanmaptest, topological_sorting) {
   // topological sort
     TrojanMap m;
     std::string file = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_dependencies.csv";
@@ -122,8 +123,13 @@ TEST(Trojanmaptest, Cycledetection) {
         std::cout << dependencies[i][j] << std::endl;
       }
     }
+  std::cout << "-----------------" << std::endl;
+  std::vector<std::string> vec1 = {"this", "that"};
+  for(int i = 0; i < vec1.size(); i++){
+    std::cout << vec1[i] << std::endl;
+  }
 
-
+  
   std::cout << "-----------------" << std::endl;
     std::string loc = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_locations.csv";
     std::vector<std::string> locations = m.ReadLocationsFromCSVFile(loc);
@@ -133,9 +139,35 @@ TEST(Trojanmaptest, Cycledetection) {
 
 
   // testing DeliveringTrojan
-  std::vector<std::string> topo_result = m.DeliveringTrojan(locations, dependencies);
-  std::vector<std::string> gt ={"Ralphs","Chick-fil-A", "KFC"};
-  EXPECT_EQ(topo_result, gt);
+  std::vector<std::string> result = m.DeliveringTrojan(locations, dependencies);
+  for(int i = 0; i < result.size(); i++){
+    std::cout << result[i] << std::endl;
+  }
+  std::vector<std::string> gt = {"Ralphs", "Chipotle", "Parking Center", "Jefferson"};
+  EXPECT_EQ(result, gt);
+}
+
+TEST(TrojanMapTest, TopologicalSort)
+{
+  TrojanMap m;
+
+  std::vector<std::string> location_names = {"Ralphs", "Chick-fil-A", "KFC"};
+  std::vector<std::vector<std::string>> dependencies = {{"Ralphs", "KFC"}, {"Ralphs", "Chick-fil-A"}, {"KFC", "Chick-fil-A"}};
+  auto result = m.DeliveringTrojan(location_names, dependencies);
+  std::vector<std::string> gt = {"Ralphs", "KFC", "Chick-fil-A"};
+  EXPECT_EQ(result, gt);
+
+  location_names = {"Ralphs", "Chipotle", "Parking Center"};
+  dependencies = {{"Ralphs", "Chipotle"}, {"Ralphs", "Parking Center"}, {"Chipotle", "Parking Center"}};
+  result = m.DeliveringTrojan(location_names, dependencies);
+  gt = {"Ralphs", "Chipotle", "Parking Center"};
+  EXPECT_EQ(result, gt);
+
+  location_names = {"Ralphs", "Chipotle", "Parking Center", "Jefferson"};
+  dependencies = {{"Ralphs", "Chipotle"}, {"Ralphs", "Parking Center"}, {"Chipotle", "Parking Center"}, {"Parking Center", "Jefferson"}};
+  result = m.DeliveringTrojan(location_names, dependencies);
+  gt = {"Ralphs", "Chipotle", "Parking Center", "Jefferson"};
+  EXPECT_EQ(result, gt);
 }
 
 TEST(Trojanmaptest, Dijkstra){
