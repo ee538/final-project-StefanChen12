@@ -382,8 +382,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   std::string end = GetID(location2_name);
 
   // get all edge
-  struct edge
-  {
+  struct edge{
     std::string begin;
     std::string finish;
     double distance;
@@ -392,8 +391,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   std::vector<edge> all_E;
   for (auto &&node : data){
     std::string begin = node.second.id;
-    for (int i = 0; i < node.second.neighbors.size(); i++)
-    {
+    for (int i = 0; i < node.second.neighbors.size(); i++){
       std::string finish = node.second.neighbors[i];
       all_E.push_back({begin, finish, CalculateDistance(begin, finish)});
     }
@@ -403,14 +401,12 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   // all nodes
 
   //Data
-  struct Data
-  {
+  struct Data{
     double distance;
     std::string prev;
   };
   std::unordered_map<std::string, Data> path_data;
-  for (auto it = data.begin(); it != data.end(); it++)
-  {
+  for (auto it = data.begin(); it != data.end(); it++){
     double dis = it->second.id == start ? 0 : INT_MAX;
     path_data[it->second.id] = {dis, ""};
   }
@@ -418,16 +414,13 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   //Bellma Ford main Function
   int stop = 0;
   double pre_dis;
-  for (int i = 1; i <= data.size() - 1; i++)
-  {
+  for (int i = 1; i <= data.size() - 1; i++){
     pre_dis = path_data[end].distance;
-    for (int j = 0; j < all_E.size(); j++)
-    {
+    for (int j = 0; j < all_E.size(); j++){
       std::string begin = all_E[j].begin;
       std::string finish = all_E[j].finish;
       double dis = all_E[j].distance;
-      if (path_data[begin].distance != INT_MAX && path_data[begin].distance + dis < path_data[finish].distance)
-      {
+      if (path_data[begin].distance != INT_MAX && path_data[begin].distance + dis < path_data[finish].distance){
         path_data[finish].distance = path_data[begin].distance + dis;
         path_data[finish].prev = begin;
         if (finish == end)
@@ -435,8 +428,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
       }
     }
     // interrupt
-    if (path_data[end].distance != INT_MAX)
-    {
+    if (path_data[end].distance != INT_MAX){
       if (path_data[end].distance == pre_dis)
         stop++;
       if (stop == 15)
@@ -445,8 +437,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   }
 
   // result
-  while (end != "")
-  {
+  while (end != ""){
     path.push_back(end);
     end = path_data[end].prev;
   }
@@ -859,15 +850,13 @@ std::vector<std::string> res;
             res_temp.pop();
 
           }
-
           res_temp.push({it.second.id, dis});
         }
       }
     }
   }
 
-  while (res_temp.size() != 0)
-  {
+  while (res_temp.size() != 0){
     auto top = res_temp.top();
     res_temp.pop();
     res.push_back(top.id);
