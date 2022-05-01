@@ -140,13 +140,18 @@ class TrojanMap {
   // Given CSV filenames, it read and parse dependencise data from CSV file,
   // and return dependencies vector for topological sort problem.
   std::vector<std::vector<std::string>> ReadDependenciesFromCSVFile(std::string dependencies_filename);
+  
+  // decide whethere there is a cycle in topological sort
+  bool HasCycle(std::unordered_map<std::string, std::vector<std::string>> next, std::string node, std::unordered_map<std::string, bool> &visited);
 
+  // helper of HasCycle 
+  void HasCycle_helper(std::unordered_map<std::string, std::vector<std::string>> next, std::string node, std::unordered_map<std::string, bool> &visited, bool &cycle);
   // Given a vector of location names, it should return a sorting of nodes
   // that satisfies the given dependencies.
   std::vector<std::string> DeliveringTrojan(std::vector<std::string> &location_names,
                                             std::vector<std::vector<std::string>> &dependencies);  
 
-  void DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, Node> &top_data);
+  void DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, std::vector<std::string>> &next);
 
   // Given a vector of location ids, it should reorder them such that the path
   // that covers all these points has the minimum length.

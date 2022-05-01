@@ -661,6 +661,27 @@ std::vector<std::vector<std::string>> TrojanMap::ReadDependenciesFromCSVFile(std
   return dependencies_from_csv;
 }
 
+//decide whethere there is a cycle in topological sort.
+bool TrojanMap::HasCycle(std::unordered_map<std::string, std::vector<std::string>> next, std::string node, std::unordered_map<std::string, bool> &visited){
+  bool cycle = false;
+  HasCycle_helper(next, node, visited, cycle);
+  return (cycle == true);
+}
+
+void TrojanMap::HasCycle_helper(std::unordered_map<std::string, std::vector<std::string>> next, std::string node, std::unordered_map<std::string, bool> &visited, bool &cycle){
+  // if current node has been visited before means there is a cycle.
+  if(visited[node] == true){
+    cycle = true;
+    return;
+  }
+  // mark current node.
+  visited[node] = true;
+  for(auto next_node : next[node]){
+    HasCycle_helper(next, next_node, visited, cycle);
+  }
+  visited[node] = false;
+}
+
 /**
  * DeliveringTrojan: Given a vector of location names, it should return a sorting of nodes
  * that satisfies the given dependencies. If there is no way to do it, return a empty vector.
@@ -671,27 +692,42 @@ std::vector<std::vector<std::string>> TrojanMap::ReadDependenciesFromCSVFile(std
  */
 std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &locations,
                                                      std::vector<std::vector<std::string>> &dependencies){
-  
+
   std::vector<std::string> result;
-  std::unordered_map<std::string, Node> top_data;
-  for (auto i : locations){
-    for (auto j : dependencies){
-      if (i == j[0]){
-        top_data[i].name = i;
-        top_data[i].neighbors.push_back(j[1]);
+  // next is a map that record every nodes that is depended on the current node.
+  std::unordered_map<std::string, std::vector<std::string>> next;
+  for(auto cur_node : locations){
+    for(auto dependency : dependencies){
+      if(dependency[0] == cur_node){
+        next[cur_node].push_back(dependency[1]);
       }
     }
   }
 
-  for (auto i : locations){
-    std::set <std::string> marks;
-    std::vector<std::string> topo_list;
-    DFS_helper_with_topo(i, marks, topo_list, top_data);
-    if (topo_list.size() == locations.size()){
-      for(int j = 0; j < topo_list.size(); j++){
-        result.push_back(topo_list[j]);
-      }
+  // select a node that depend on nothing to detect whethere there exists a cycle.
+  // Successor is for recording all nodes that has dependency
+  std::set<std::string> Successor;
+  for(auto dependency : dependencies){
+    Successor.insert(dependency[1]);
+  }
+  std::string origin = "";
+  for(auto location : locations){
+    if(Successor.count(location) != 1){
+      origin = location;
       break;
+    }
+  }
+  std::unordered_map<std::string, bool> visited;
+  if(HasCycle(next, origin, visited) == true){
+    return result;
+  }
+
+  std::vector<std::string> topo_list;
+  std::set<std::string> marks;
+  DFS_helper_with_topo(origin, marks, topo_list, next);
+  if(topo_list.size() == locations.size()){
+    for(int i = 0; i < topo_list.size(); i++){
+      result.push_back(topo_list[i]);
     }
   }
   reverse(result.begin(), result.end());
@@ -699,18 +735,15 @@ std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &l
 }
 
 
-void TrojanMap::DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, Node> &top_data){
+void TrojanMap::DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, std::vector<std::string>> &next){
   marks.insert(root);
-  for(auto neigh : top_data[root].neighbors){
-    if(!marks.count(neigh)){
-      DFS_helper_with_topo(neigh, marks, topo_list, top_data);
+  for(auto child : next[root]){
+    if(marks.count(child) == 0){
+      DFS_helper_with_topo(child, marks, topo_list, next);
     }
   }
   topo_list.push_back(root);
-
 }
-
-
 
 
 /**

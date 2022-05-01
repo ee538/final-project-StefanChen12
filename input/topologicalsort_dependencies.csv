@@ -1,4 +1,12 @@
 Source, Destination
-Ralphs,Chick-fil-A
-Ralphs,KFC
-Chick-fil-A,KFC
+Ralphs, KFC
+Ralphs, Chick-fil-A
+KFC, Trojan Grounds (Starbucks)
+Chick-fil-A, Trojan Grounds (Starbucks)
+Trojan Grounds (Starbucks), George Tirebiter
+George Tirebiter, Pico & Flower
+George Tirebiter, Massman Theatre
+Pico & Flower, Carson Center
+Massman Theatre, Carson Center
+Carson Center, Good News Missionary Baptist Church
+Good News Missionary Baptist Church, Food Mart
