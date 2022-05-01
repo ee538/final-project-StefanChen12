@@ -13,32 +13,15 @@ TEST(TrojanMapStudentTest, Test1) {
   for(int i = 0; i < names.size(); i++){
     std::cout << names[i] << std::endl;
   }
-
-  std::cout << "----------" << std::endl;
-  // Test GetName:
-  std::string name = m.GetName("150934188");
-  // Test GetLat
-  double lat = m.GetLat("150934188");
-  // Test GetLon
-  double lon = m.GetLon("150934188");
-  // Test GetID
-  std::string id = m.GetID("Jefferson/USC");
-  std::cout << name << std::endl;
-  std::cout << lat << std::endl;
-  std::cout << lon << std::endl;
-  std::cout << id << std::endl;
-
-  std::cout<< "---------" << std::endl;
-
+  
   // Test GetClosestName.
   std::string str1 = m.FindClosestName("Ralp");
   std::cout << str1 << std::endl;
 
   // Test CalculateEditDistance.
-  std::string str2 = m.FindClosestName("Rolph");
-  std::cout << str2 << std::endl;
   EXPECT_EQ(m.CalculateEditDistance("horse", "ros"), 3);
   EXPECT_EQ(m.CalculateEditDistance("intention", "execution"), 5);
+  EXPECT_EQ(m.CalculateEditDistance("abc", "adc"), 1);
   std::cout << "---------" << std::endl;
 
   // Test CalculateShortestPath_Dijkstra
@@ -109,44 +92,16 @@ TEST(TrojanmapTest, cyclDetection) {
   auto sub2 = m.GetSubgraph(square2);
   bool result2 = m.CycleDetection(sub2, square2);
   EXPECT_EQ(result2, false);
+
+  // Test case 3
+  std::vector<double> square3 = {-118.294, -118.289, 34.030, 34.020};
+  auto sub3 = m.GetSubgraph(square3);
+  bool result3 = m.CycleDetection(sub3, square3);
+  EXPECT_EQ(result3, true);
+
 }
 
-
-
-TEST(Trojanmaptest, topological_sorting) {
-  // topological sort
-    TrojanMap m;
-    std::string file = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_dependencies.csv";
-    std::vector<std::vector<std::string>> dependencies = m.ReadDependenciesFromCSVFile(file);
-    for(int i = 0; i < dependencies.size(); i++){
-      for(int j = 0; j < dependencies[i].size(); j++){
-        std::cout << dependencies[i][j] << std::endl;
-      }
-    }
-  std::cout << "-----------------" << std::endl;
-  std::vector<std::string> vec1 = {"this", "that"};
-  for(int i = 0; i < vec1.size(); i++){
-    std::cout << vec1[i] << std::endl;
-  }
-
-  
-  std::cout << "-----------------" << std::endl;
-    std::string loc = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_locations.csv";
-    std::vector<std::string> locations = m.ReadLocationsFromCSVFile(loc);
-    for(int i = 0; i < locations.size(); i++){
-      std::cout << locations[i] << std::endl;
-    }
-
-
-  // testing DeliveringTrojan
-  std::vector<std::string> result = m.DeliveringTrojan(locations, dependencies);
-  for(int i = 0; i < result.size(); i++){
-    std::cout << result[i] << std::endl;
-  }
-  std::vector<std::string> gt = {"Ralphs", "Chipotle", "Parking Center", "Jefferson"};
-  EXPECT_EQ(result, gt);
-}
-
+// Test Topological sorting
 TEST(TrojanMapTest, TopologicalSort)
 {
   TrojanMap m;
@@ -170,13 +125,6 @@ TEST(TrojanMapTest, TopologicalSort)
   EXPECT_EQ(result, gt);
 }
 
-TEST(Trojanmaptest, Dijkstra){
-  TrojanMap m;
-  auto path = m.CalculateShortestPath_Dijkstra("Ralphs", "Target");
-  for(int i = 0; i < path.size(); i++){
-    std::cout << path[i] << std::endl;
-  }
-}
 
 TEST(TrojanMapTest, TSP1) {
   TrojanMap m;
