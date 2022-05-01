@@ -121,11 +121,15 @@ TEST(Trojanmaptest, topological_sorting) {
     for(int i = 0; i < dependencies.size(); i++){
       for(int j = 0; j < dependencies[i].size(); j++){
         std::cout << dependencies[i][j] << std::endl;
-        std::cout << typeid(dependencies[i][j]).name() << std::endl;
       }
     }
+  std::cout << "-----------------" << std::endl;
+  std::vector<std::string> vec1 = {"this", "that"};
+  for(int i = 0; i < vec1.size(); i++){
+    std::cout << vec1[i] << std::endl;
+  }
 
-
+  
   std::cout << "-----------------" << std::endl;
     std::string loc = "/Users/stefan/Documents/EE538_Computational_Principles_for_Electrical_Engineering/Homeworks/Final/final-project-StefanChen12/input/topologicalsort_locations.csv";
     std::vector<std::string> locations = m.ReadLocationsFromCSVFile(loc);
