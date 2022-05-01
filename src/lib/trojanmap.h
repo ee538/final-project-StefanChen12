@@ -36,7 +36,7 @@ class Node {
 class node{
     public:
     node(){};
-    node(bool v, long d, std::string Id, std::string pre, std::string backward, std::vector<std::string> neig){
+    node(bool v, double d, std::string Id, std::string pre, std::string backward, std::vector<std::string> neig){
         visit = v;
         distance = d;
         id = Id;
@@ -45,7 +45,7 @@ class node{
         for(int i = 0; i < neig.size(); i++){
             neighbors.push_back(neig[i]);
         }
-        //stop = s;
+        // stop = s;
     };
     bool visit; // check if the node has been visited, false represents not visited and true represents visited.
     double distance; // the distance between this node and the start node, the default value is infinity.
@@ -53,7 +53,7 @@ class node{
     std::string prev; // the previous node in the shortest path.
     std::string back; // the previous node in the shortest path.
     std::vector<std::string> neighbors; // the neighbors of the node.
-    //int stop;
+    int stop;
     // Returns true if distance is smaller than the distance of other node object
     // and false otherwise.
     bool operator<(const node& rhs) const;

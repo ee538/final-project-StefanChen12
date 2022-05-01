@@ -303,17 +303,13 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
         // get id of the top node
         std::string origin = heap.top().id;
         for(auto neigh: Data[origin].neighbors){
-        // for(auto neighbor : Data[neigh].neighbors){
-        //   if(Data[neighbor].visit == 1){
-        //     std::cout << Data[neighbor].id << std::endl;
-        //   }
-        // }
-          
+
           for(auto neighbor: Data[neigh].neighbors){
+          
             if(Data[neighbor].visit == false) continue;
-          // std::cout << Data[neighbor].distance << std::endl;
-          // std::cout << Data[neighbor].id << std::endl;
+  
             else{
+
               if(Data[neigh].distance > CalculateDistance(neighbor, neigh) + Data[neighbor].distance){
               Data[neigh].prev = neighbor;
               Data[neigh].distance = CalculateDistance(neigh, neighbor) + Data[neighbor].distance;
@@ -338,11 +334,10 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
       path.push_back(root_ID);
       reverse(path.begin(), path.end());
 
-      // double distance = Data[end_ID].distance;
-      // std::cout << "the distance is:" << distance << std::endl;
-      // PrintAndGetDuration();
   return path;
 }
+
+
 
 /**
  * CalculateShortestPath_Bellman_Ford: Given 2 locations, return the shortest path which is a
@@ -354,76 +349,85 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
  */
 
 std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
-  std::string location1_name, std::string location2_name){
+    std::string location1_name, std::string location2_name){
   std::cout << "=========================Bellman Ford=======================" << std::endl;
 
   std::vector<std::string> path;
-  std::string start = GetID(location1_name); // start
-  std::string end = GetID(location2_name); // end
+  std::string start = GetID(location1_name);
+  std::string end = GetID(location2_name);
 
+  // get all edge
+  struct edge
+  {
+    std::string from;
+    std::string to;
+    double distance;
+  };
 
-  std::unordered_map<std::string, node> Data;
-  std::unordered_map<std::string, Node>::iterator it;
-
-  for(it = data.begin(); it != data.end(); it++){
-    node new_node(false, INT_MAX, it->first, "", "", it->second.neighbors);
-    Data[it->first] = new_node;
+  std::vector<edge> all_E;
+  for (auto &&node : data){
+    std::string from = node.second.id;
+    for (int i = 0; i < node.second.neighbors.size(); i++)
+    {
+      std::string to = node.second.neighbors[i];
+      all_E.push_back({from, to, CalculateDistance(from, to)});
+    }
   }
 
-  double Final_distance;
+  // get all verices 
+  // all nodes
+
+  //Data
+  struct Data
+  {
+    double distance;
+    std::string prev;
+  };
+  std::unordered_map<std::string, Data> path_data;
+  for (auto it = data.begin(); it != data.end(); it++)
+  {
+    double opt_w = it->second.id == start ? 0 : __INT_MAX__;
+    path_data[it->second.id] = {opt_w, ""};
+  }
+
+  //Bellma Ford main Function
   int stop = 0;
-  Data[end].distance = 0;
-  Data[start].distance = INT_MAX;
-  // for all nodes in path
-  for (int i = 0; i <= Data.size() - 1 ; i++){ 
-    Final_distance = CalculateShortestPath_Bellman_Ford_Helper(start, i, end, Data);
-      
-  }
-
-  Data[end].back = "";
-  Data[start].prev = "";
-
-
-  while (start != ""){
-    path.push_back(start);
-    start = Data[start].back;
-    
-  }
-  std::cout << "the distance is:" << Final_distance << std::endl;
-return path;
-}
-  
-double TrojanMap::CalculateShortestPath_Bellman_Ford_Helper(std::string s, int i, std::string v, std::unordered_map<std::string, node> &Data){
-    
-    if (i == 0){
-      return(v == s) ? 0 :INT_MAX;
-    }else{
-
-    double d = INT_MAX;
-    std::vector<std::string> pre = Data[v].neighbors;
-  
-
-    for (auto u : pre){
-    
-      double dis = CalculateDistance(u,v);
-      
-      if (Data[u].distance > CalculateDistance(u,v) + Data[v].distance){
-        
-        
-        
-        Data[u].distance = (CalculateDistance(u,v) + Data[v].distance);
-
+  double pre_dis;
+  for (int i = 1; i <= data.size() - 1; i++)
+  {
+    pre_dis = path_data[end].distance;
+    for (int j = 0; j < all_E.size(); j++)
+    {
+      std::string from = all_E[j].from;
+      std::string to = all_E[j].to;
+      double dis = all_E[j].distance;
+      if (path_data[from].distance != __INT_MAX__ && path_data[from].distance + dis < path_data[to].distance)
+      {
+        path_data[to].distance = path_data[from].distance + dis;
+        path_data[to].prev = from;
+        if (to == end)
+          stop = 0;
       }
-      Data[u].back = v;
-      d =  std::min(d, (CalculateShortestPath_Bellman_Ford_Helper(s, i-1, u, Data)+ dis));
-      
     }
+    // interrupt
+    if (path_data[end].distance != __INT_MAX__)
+    {
+      if (path_data[end].distance == pre_dis)
+        stop++;
+      if (stop == 3)
+        break;
+    }
+  }
 
-    return std::min(CalculateShortestPath_Bellman_Ford_Helper(s, i-1, v, Data), d);
-    }
-    
+  // result
+  while (end != "")
+  {
+    path.push_back(end);
+    end = path_data[end].prev;
+  }
+  std::reverse(path.begin(), path.end());
+  return path;
 }
-
 /**
  * Travelling salesman problem: Given a list of locations, return the shortest
  * path which visit all the places and back to the start point.
@@ -640,6 +644,7 @@ std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &l
   
   std::vector<std::string> result;
   std::unordered_map<std::string, Node> top_data;
+ 
   for (auto i : locations){
     for (auto j : dependencies){
       if (i == j[0]){
@@ -648,14 +653,16 @@ std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &l
       }
     }
   }
-
+std::vector<std::string> topo_list;
   for (auto i : locations){
     std::set <std::string> marks;
-    std::vector<std::string> topo_list;
+    
     DFS_helper_with_topo(i, marks, topo_list, top_data);
+    // topo_list.pop();
     if (topo_list.size() == locations.size()){
       for(int j = 0; j < topo_list.size(); j++){
-        result.push_back(topo_list[j]);
+        
+
       }
       break;
     }
@@ -667,7 +674,9 @@ std::vector<std::string> TrojanMap::DeliveringTrojan(std::vector<std::string> &l
 
 void TrojanMap::DFS_helper_with_topo(std::string root, std::set <std::string> &marks, std::vector<std::string> &topo_list, std::unordered_map<std::string, Node> &top_data){
   marks.insert(root);
+  std::cout << root << std::endl;
   for(auto neigh : top_data[root].neighbors){
+
     if(!marks.count(neigh)){
       DFS_helper_with_topo(neigh, marks, topo_list, top_data);
     }
