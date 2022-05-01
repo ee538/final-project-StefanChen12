@@ -4,58 +4,26 @@
 #include <string>
 #include <typeinfo>
 
-
-TEST(TrojanMapStudentTest, Test1) {
-  // EXPECT_EQ(true, true);
-  // Test Autocomplete
+TEST(TrojanMapStudentTest, AutoComplete){
+  std::cout << "=====AutoComplete=====" <<std::endl;
   TrojanMap m;
-  auto names = m.Autocomplete("ch");
-  for(int i = 0; i < names.size(); i++){
-    std::cout << names[i] << std::endl;
-  }
-  
-  // Test GetClosestName.
-  std::string str1 = m.FindClosestName("Ralp");
-  std::cout << str1 << std::endl;
+  // Thers's same initial in the data
+  auto res1 = m.Autocomplete("ch");
+  std::vector<std::string> ans1 = { "Chinese Street Food", "Chase", "Chucks Chicken & Waffles", "Cheebos Burger", "Chevron", "Chase Plaza Heliport", 
+  "Chipotle", "Chevron 2", "Church of Christ", "Chevron 1", "Chick-fil-A" };
+  EXPECT_EQ(res1, ans1);
 
-  // Test CalculateEditDistance.
-  EXPECT_EQ(m.CalculateEditDistance("horse", "ros"), 3);
-  EXPECT_EQ(m.CalculateEditDistance("intention", "execution"), 5);
-  EXPECT_EQ(m.CalculateEditDistance("abc", "adc"), 1);
-  std::cout << "---------" << std::endl;
+  // Thers's no same initial in the data
+  auto res2 = m.Autocomplete("xu");
+  std::vector<std::string> ans2 = {};
+  EXPECT_EQ(res2, ans2);
 
-  // Test CalculateShortestPath_Dijkstra
-  // Test from Ralphs to Chick-fil-A
-  auto path = m.CalculateShortestPath_Dijkstra("Ralphs", "Chick-fil-A");
-  std::vector<std::string> gt{
-      "2578244375","4380040154","4380040153","4380040152","4380040148","6818427920","6818427919",
-      "6818427918","6818427892","6818427898","6818427917","6818427916","7232024780","6813416145",
-      "6813416154","6813416153","6813416152","6813416151","6813416155","6808069740","6816193785",
-      "6816193786","123152294","4015203136","4015203134","4015203133","21098539","6389467809",
-      "4015203132","3195897587","4015203129","4015203127","6352865690","6813379589","6813379483",
-      "3402887081","6814958394","3402887080","602606656","4872897515","4399697589","6814958391",
-      "123209598","6787673296","122728406","6807762271","4399697304","4399697302","5231967015",
-      "1862347583","3233702827","4540763379","6819179753","6820935900","6820935901","6813379556",
-      "6820935898","1781230450","1781230449","4015405542","4015405543","1837212104","1837212107",
-      "2753199985","6820935907","1837212100","4015372458","6813411588","1837212101","6814916516",
-      "6814916515","6820935910","4547476733"}; // Expected path
-  // Print the path lengths
-  std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
-  std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
-  EXPECT_EQ(path, gt);
-  
-  // Reverse the input from Ralphs to Chick-fil-A
-  path = m.CalculateShortestPath_Dijkstra("Chick-fil-A", "Ralphs");
-  std::reverse(gt.begin(),gt.end()); // Reverse the path
-
-  // Print the path lengths
-  std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
-  std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
-  EXPECT_EQ(path, gt);
-
+  // Test No initial input
+  auto res3 = m.Autocomplete("");
+  std::vector<std::string> ans3 = {};
+  EXPECT_EQ(res3, ans3);
 }
-  
-// Test FindPosition function
+
 TEST(TrojanMapTest, FindPosition) {
   TrojanMap m;
   
@@ -77,8 +45,50 @@ TEST(TrojanMapTest, FindPosition) {
   EXPECT_EQ(position, gt4);
 }
 
-  
-TEST(TrojanmapTest, cyclDetection) {
+TEST(TrojanMapStudentTest, EditDistance) {
+  std::cout << "=====EditDistance=====" <<std::endl;
+  // Test CalculateEditDistance.
+  EXPECT_EQ(m.CalculateEditDistance("horse", "ros"), 3);
+  EXPECT_EQ(m.CalculateEditDistance("intention", "execution"), 5);
+  EXPECT_EQ(m.CalculateEditDistance("abc", "adc"), 1);
+}
+
+TEST(TrojanMapStudentTest, ShortestPath){
+  std::cout << "=====ShortestPath=====" <<std::endl;
+  TrojanMap m;
+  // Thers's same initial in the data
+  auto resB1 = m.CalculateShortestPath_Bellman_Ford("Ralphs","Target");
+  auto resD1 = m.CalculateShortestPath_Dijkstra("Ralphs","Target");
+  std::vector<std::string> ans1 = {
+     "2578244375","4380040154","4380040158","4380040167","6805802087","8410938469","6813416131", "7645318201","6813416130","6813416129","123318563",
+     "452688940","6816193777","123408705","6816193774","452688933","452688931","123230412","6816193770","6787470576","4015442011","6816193692",
+     "6816193693","6816193694","4015377691","544693739","6816193696","6804883323","6807937309","6807937306","6816193698","4015377690","4015377689",
+     "122814447","6813416159","6813405266","4015372488","4015372487","6813405229","122719216","6813405232","4015372486","7071032399","4015372485",
+     "6813379479","6813379584","6814769289","5237417650"};
+  EXPECT_EQ(resB1, ans1);
+  EXPECT_EQ(resD1, ans1);
+
+  //far distance
+  auto resB2 = m.CalculateShortestPath_Bellman_Ford("Pizza King", "Ralphs");
+  auto resD2 = m.CalculateShortestPath_Dijkstra("Pizza King", "Ralphs");
+  std::vector<std::string> ans2 = {"6278441393", "2613073681","2613073688","2613073683","8410731069","1732243896","6792403557","6792403560","3642844524","1732243600",
+"2613073699","2613073701","5249489005","1732243947","122670310","2613073700","122670308","2613073722","2613073691","122688464","2613073695","123289577","1615672692",
+"123112737","2193439965","601390387","211752888","4009744690","122625129","122625127","123019477","123019475","1771091142","7229539444","5567736373","5567718503","6814958408",
+"123209605","6814958406","4015203118","4015203119","1878026177","6805054066","1771091141","122827894","6805827732","6817053930","122827893","2613081563","123660671",
+"1473199412","4583263530","6814958435","6816193787","6813405220","6813405219","6813405218","6813405217","6813405216","6813405215","6813405212","4015203133","4015203134",
+"4015203136","123152294","6816193786","6816193785","6808069740","6813416155","6813416151","6813416152","6813416153","6813416154","6813416145","7232024780","6818427916","6818427917",
+"6818427898","6818427892","6818427918","6818427919","6818427920","4380040148","4380040152","4380040153","4380040154", "2578244375"};
+  EXPECT_EQ(resB2, ans2);
+  EXPECT_EQ(resD2, ans2);
+
+  auto resB3= m.CalculateShortestPath_Bellman_Ford("Honeybird", "Target");
+  auto resD3 = m.CalculateShortestPath_Dijkstra("Honeybird", "Target");
+    std::vector<std::string> ans3 = { "5567724155", "5237417654", "6814820016", "6814820009", "6814820019", "6814620880", "6813360960", "6813379480", 
+    "6813360961", "6813379584", "6814769289", "5237417650" };
+  EXPECT_EQ(resB3, ans3);
+  EXPECT_EQ(resD3, ans3);
+
+TEST(TrojanmapTest, CycleDetection) {
    TrojanMap m;
   
   // Test case 1
@@ -98,12 +108,10 @@ TEST(TrojanmapTest, cyclDetection) {
   auto sub3 = m.GetSubgraph(square3);
   bool result3 = m.CycleDetection(sub3, square3);
   EXPECT_EQ(result3, true);
-
 }
 
 // Test Topological sorting
-TEST(TrojanMapTest, TopologicalSort)
-{
+TEST(TrojanMapTest, TopologicalSort){
   TrojanMap m;
 
   std::vector<std::string> location_names = {"Ralphs", "Chick-fil-A", "KFC"};
@@ -146,48 +154,22 @@ TEST(TrojanMapTest, TSP1) {
   EXPECT_EQ(flag, true);
 }
 
-
-TEST(TrojanMapTest, TSP2) {
+TEST(TrojanMapStudentTest, FindNearby) {
+  std::cout << "=====FindNearby=====" <<std::endl;
   TrojanMap m;
   
-  std::vector<std::string> input{"6819019976","6820935923","122702233","8566227783","8566227656","6816180153","1873055993","7771782316"}; // Input location ids 
-  auto result = m.TravellingTrojan_Backtracking(input);
-  std::cout << "My path length: "  << result.first << "miles" << std::endl; // Print the result path lengths
-  std::vector<std::string> gt{"6819019976","1873055993","8566227656","122702233","8566227783","6816180153","7771782316","6820935923","6819019976"}; // Expected order
-  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; // Print the gt path lengths
-  bool flag = false;
-  if (gt == result.second[result.second.size()-1]) // clockwise
-    flag = true;
-  std::reverse(gt.begin(),gt.end()); // Reverse the expected order because the counterclockwise result is also correct
-  if (gt == result.second[result.second.size()-1]) 
-    flag = true;
-  
-  EXPECT_EQ(flag, true);
-}
+  // With attribute and the location
+  auto res1 = m.FindNearby("supermarket", "Ralphs", 10, 10);
+  std::vector<std::string> ans1 = {"5237417649", "6045067406", "7158034317"};
+  EXPECT_EQ(res1, ans1);
 
+  // With attribute but no location
+  auto res2 = m.FindNearby("fast_food", "", 10, 10);
+  std::vector<std::string> ans2 = { "6279600813", "3577173161", "5695236164", "4927493958", "3088547686", "6216810098", "5567724155", "5567733799", "9591449455", "4577908517" };
+  EXPECT_EQ(res2, ans2);
 
-TEST(TrojanMapTest, TSP3) {
-  TrojanMap m;
-  
-  std::vector<std::string> input{"6819019976","6820935923","122702233","8566227783","8566227656","6816180153","1873055993","7771782316"}; // Input location ids 
-  auto result = m.TravellingTrojan_2opt(input);
-  std::cout << "My path length: "  << result.first << "miles" << std::endl; // Print the result path lengths
-  std::vector<std::string> gt{"6819019976","1873055993","8566227656","122702233","8566227783","6816180153","7771782316","6820935923","6819019976"}; // Expected order
-  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; // Print the gt path lengths
-  bool flag = false;
-  if (gt == result.second[result.second.size()-1]) // clockwise
-    flag = true;
-  std::reverse(gt.begin(),gt.end()); // Reverse the expected order because the counterclockwise result is also correct
-  if (gt == result.second[result.second.size()-1]) 
-    flag = true;
-  
-  EXPECT_EQ(flag, true);
-}
-
-TEST(TrojanMapTest, FindNearby) {
-  TrojanMap m;
-  
-  auto result = m.FindNearby("supermarket", "Ralphs", 10, 10);
-  std::vector<std::string> ans{"5237417649", "6045067406", "7158034317"};
-  EXPECT_EQ(result, ans);
+  //No attribute and no location
+  auto res3 = m.FindNearby("", "", 10, 10);
+  std::vector<std::string> ans3 = {};
+  EXPECT_EQ(res3, ans3);
 }
