@@ -275,10 +275,10 @@ double TrojanMap::CalculatePathLength(const std::vector<std::string> &path) {
  */
 std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
     std::string location1_name, std::string location2_name) {
-      std::cout << "=========================Dijkstra=======================" << std::endl;
+      std::vector<std::string> path;
       // define a minimum heap.
       std::priority_queue<node, std::vector<node>, std::greater<node> > heap;
-      std::vector<std::string> path;
+      
       // Define a map to record all the node objects.
       std::unordered_map<std::string, node> Data;
       // an iterator for transforming Nodes in data into nodes in Data.
@@ -333,7 +333,6 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
       }
       path.push_back(root_ID);
       reverse(path.begin(), path.end());
-
   return path;
 }
 
@@ -350,7 +349,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
 
 std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
     std::string location1_name, std::string location2_name){
-  std::cout << "=========================Bellman Ford=======================" << std::endl;
+
 
   std::vector<std::string> path;
   std::string start = GetID(location1_name);
@@ -788,7 +787,7 @@ std::vector<std::string> res;
 
   for (const auto &it : data){
     if (it.second.id != target_id){
-      if (it.second.attributes.count(attributesName) > 0){  //count - if there's same string occarance
+      if (it.second.attributes.count(attributesName) > 0){  //count - if there's same string occurance
         double dis = CalculateDistance(it.second.id, target_id);
 
         if (dis <= r && (res_temp.size() < k || dis < res_temp.top().dis)){
