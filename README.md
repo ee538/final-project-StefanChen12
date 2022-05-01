@@ -543,10 +543,10 @@ Please create a new REPORT.md file and write your report there.
 
 ### Rubrics:
 
-1. Implementation of Auto complete: 5 points. (Phase 1) //ME
-2. Implementation of GetPosition: 5 points. (Phase 1) //ME
+1. Implementation of Auto complete: 5 points. (Phase 1)
+2. Implementation of GetPosition: 5 points. (Phase 1)
 3. Implementation of EditDistance: 10 points. (Phase 1)
-4. Implementation of shortest path: 15 points. (Phase 2) //ME
+4. Implementation of shortest path: 15 points. (Phase 2)
    1. Bellman-Ford implementation
    2. Dijkstra implementation
    3. Plot two paths, and measure and report time spent by two algorithms.
@@ -560,7 +560,7 @@ Please create a new REPORT.md file and write your report there.
    2. Brute-force enhanced with early backtracking: 5 points.
    3. 2-opt: 10 points.
    4. Animated plot: 5 points.
-8. FindNearby points: 10 points. (Phase 3) //ME
+8. FindNearby points: 10 points. (Phase 3)
    1. Return the correct ids and draw the points.
 9. Video presentation and report: 10 points. (Phase 3)
 10. Creating reasonable unit tests: 10 points.
